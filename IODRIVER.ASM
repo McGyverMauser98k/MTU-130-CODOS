@@ -709,7 +709,7 @@ C96C   AC DB 02             LDY $02DB
 C96F   4C 51 C9             JMP LC951
 C972   84 FD      LC972     STY $FD
 C974   60                   RTS								;RETURN FROM SUBRUTINE
-C975   8E CD 02   GETKEY     STX $02CD						;GETKEY RUTINE
+C975   8E CD 02   GETKEY    STX $02CD						;GETKEY RUTINE
 C978   8C CE 02             STY $02CE
 C97B   20 92 D0             JSR ONTCR
 C97E   20 1C D1             JSR LD11C
@@ -727,7 +727,7 @@ C99B   A9 00                LDA #$00
 C99D   20 8B CA             JSR LCA8B
 C9A0   F0 1B                BEQ LC9BD
 C9A2   A2 07                LDX #$07
-C9A4   AD 0D 02             LDA $020D
+C9A4   AD 0D 02             LDA $020D						;
 C9A7   DD DE CB   LC9A7     CMP $CBDE,X
 C9AA   F0 05                BEQ LC9B1
 C9AC   CA                   DEX
@@ -784,9 +784,9 @@ CA25   20 E6 CB             JSR OUTCH
 CA28   AE CD 02   LCA28     LDX $02CD
 CA2B   AC CE 02             LDY $02CE
 CA2E   4C 2F D1             JMP LD12F
-CA31   A9 00      IFKEY     LDA #$00						;'IFKEY' ROUTINE
+CA31   A9 00      IFKEY     LDA #$00						;'IFKEY' ROUTINE - TO TEST IF A KEY IS PRESSED WITHOUT MULTIPLE RECOGNITION LOCKOUT
 CA33   8D 0D 02             STA $020D
-CA36   8E CD 02   TSTKEY    STX $02CD						;'TSTKEY' ROUTINE
+CA36   8E CD 02   TSTKEY    STX $02CD						;'TSTKEY' ROUTINE - TO TEST IF A KEY IS PRESSED; HAS MULTIPLE RECOGNITION LOCKOUT
 CA39   8C CE 02             STY $02CE
 CA3C   20 1C D1             JSR LD11C
 CA3F   20 D7 CA             JSR LCAD7
@@ -894,21 +894,21 @@ CB10   F0 04                BEQ LCB16
 CB12   A5 FA                LDA $FA
 CB14   D0 35                BNE LCB4B
 CB16   A5 FA      LCB16     LDA $FA
-CB18   C9 61                CMP #$61
+CB18   C9 61                CMP #$61						;LOWER CASE A
 CB1A   90 2F                BCC LCB4B
-CB1C   C9 7B                CMP #$7B
+CB1C   C9 7B                CMP #$7B						;L.C.Z+1
 CB1E   B0 2B                BCS LCB4B
 CB20   38         LCB20     SEC								;SET CARRY FLAG
-CB21   E9 20                SBC #$20
+CB21   E9 20                SBC #$20						;FOLD LOWER TO UPPER CASE ALPFA
 CB23   D0 26                BNE LCB4B
 CB25   E0 3D      LCB25     CPX #$3D
 CB27   A5 FA                LDA $FA
 CB29   90 04                BCC LCB2F
 CB2B   09 10                ORA #$10
 CB2D   B0 1C                BCS LCB4B
-CB2F   C9 61      LCB2F     CMP #$61						;97? SO MORE THAN KEYS
+CB2F   C9 61      LCB2F     CMP #$61						;LOWER CASE A
 CB31   90 06                BCC LCB39
-CB33   C9 7B                CMP #$7B
+CB33   C9 7B                CMP #$7B						;L.C.Z+1
 CB35   90 E9                BCC LCB20
 CB37   E9 1A                SBC #$1A
 CB39   C9 5B      LCB39     CMP #$5B
@@ -1083,10 +1083,15 @@ CBE3   4A             		;'J'
 CBE4   4D					;'M'
 CBE5   4E 					;'N'
 
-CBE6   D8         OUTCH     CLD								;'OUTCH' RUTINE - CLEAR DECIMAL MODE
-CBE7   8D C7 02             STA $02C7
-CBEA   8E C8 02             STX $02C8
-CBED   8C C9 02             STY $02C9
+;SCRATCH AREA
+;$02C7 - A BACKUP
+;$02C8 - X BACKUP
+;$02C9 - Y BACKUP
+
+CBE6   D8         OUTCH     CLD								;'OUTCH' RUTINE - CLEAR DECIMAL MODE ;ARGUMENTS RETURNED: None, A, X, and Y registers preserved. 
+CBE7   8D C7 02             STA $02C7						;PRESERVE A
+CBEA   8E C8 02             STX $02C8						;PRESERVE X
+CBED   8C C9 02             STY $02C9						;PRESERVE Y
 CBF0   C9 00                CMP #$00
 CBF2   10 08                BPL $CBFC
 CBF4   2C 19 02             BIT EXTHI						;IF BIT 7=1 THEN CALL USER RUTINE TO PROCESS ALL CHARACTERS WITH BIT 7 SET. 'EXTHI'
@@ -1123,9 +1128,9 @@ CC3D   2C 15 02   LCC3D     BIT RVIDEO						;IF BIT 7=1 THEN CHARACTER ARE DRAWN
 CC40   10 03                BPL LCC45
 CC42   20 A7 D0             JSR LD0A7
 CC45   20 DA CE   LCC45     JSR LCEDA
-CC48   AC C9 02   LCC48     LDY $02C9
-CC4B   AE C8 02             LDX $02C8
-CC4E   AD C7 02             LDA $02C7
+CC48   AC C9 02   LCC48     LDY $02C9						;RECOVER Y
+CC4B   AE C8 02             LDX $02C8						;RECOVER X
+CC4E   AD C7 02             LDA $02C7						;RECOVER A
 CC51   60                   RTS								;RETURN FROM SUBRUTINE
 CC52   A2 08      LCC52     LDX #$08
 CC54   DD FF CC   LCC54     CMP $CCFF,X
@@ -1233,7 +1238,7 @@ CD2E   A9 00                LDA #$00
 CD30   8D 0D 02             STA $020D
 CD33   4C D1 D1             JMP DRWLEG
 CD36   D8         INITTW    CLD								;'INITTW' ROUTINE - CLEAR DECIMAL MODE
-CD37   20 95 CD             JSR CLRDSP
+CD37   20 95 CD             JSR CLRDSP						;JUMP TO CLEAR DISPLAY
 CD3A   A9 00                LDA #$00						;LOAD #$00
 CD3C   8D 39 02             STA $0239			
 CD3F   A2 0F                LDX #$0F						;LOAD 16 IN TO X
@@ -1350,10 +1355,10 @@ CE13   85 F9                STA $F9
 CE15   20 06 D1   LCE15     JSR LD106
 CE18   20 1E CE             JSR LCE1E
 CE1B   4C 27 D1             JMP LD127
-CE1E   98         LCE1E     TYA
+CE1E   98         LCE1E     TYA								;PUSH Y ON STACK
 CE1F   48                   PHA
-CE20   A9 00                LDA #$00
-CE22   A4 F9                LDY $F9
+CE20   A9 00                LDA #$00						;LOAD A=$00
+CE22   A4 F9                LDY $F9							
 CE24   F0 0F                BEQ LCE35
 CE26   A8                   TAY
 CE27   91 F4      LCE27     STA ($F4),Y
@@ -1521,10 +1526,10 @@ CF5C   90 02                BCC LCF60
 CF5E   E6 F3                INC $F3
 CF60   60         LCF60     RTS								;RETURN FROM SUBRUTINE
 CF61   49 FF                EOR #$FF
-CF63   48         LCF63     PHA									;PRESERVE A TO STACK
-CF64   A9 00                LDA #$00							;LOAD #$00
-CF66   85 FB                STA $FB								;STORE AT $FB - RESET $FB TO #$00
-CF68   68                   PLA									;RESTORE A FROM STACK
+CF63   48         LCF63     PHA								;PRESERVE A TO STACK
+CF64   A9 00                LDA #$00						;LOAD #$00
+CF66   85 FB                STA $FB							;STORE AT $FB - RESET $FB TO #$00
+CF68   68                   PLA								;RESTORE A FROM STACK
 CF69   0A                   ASL A
 CF6A   26 FB                ROL $FB
 CF6C   0A                   ASL A
