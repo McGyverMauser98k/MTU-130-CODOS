@@ -6,72 +6,72 @@
 ;$0200-027F CONTAINS A NUMBER OF PARAMETERS THAT AFFECT THE "FEEL" OF THE CONSOLE TO A GREAT EXTENT.
 
 * = $0200
-0200   #$01        						;'COL' - CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80.
-0201   #$01                				;'LINE' - CURRENT LINE NUMBER OF TEXT CURSOR. 1-NLINET.
-0202   #$00                   			;X COORDINATE OF THE GRAPHIC CURSOR POSITION, 2 BYTES.
-0203   #$00                   
-0204   #$00                   			;Y COORDINATE OF THE GRAPHIC CURSOR POSITION, 2 BYTES.
-0205   #$00                   
-0206   #$00                   			;X GRAPHIC COORDINATE "REGISTER", 2 BYTES.
-0207   #$00                   
-0208   #$00                   			;Y GRAPHIC COORDINATE "REGISTER", 2 BYTES.
-0209   #$00                   
-020A   #$80                  			;'GMODE' - GRAPHIC DRAWING MODE, $00=MOVE, $40=ERASE, $80=DRAW, $C0=FLIP. ADD $20 FOR DASHED LINES.
-020B   #$F0	                			;'DSHPAT' ;RECIRCULATING DASHED LINE PATTERN, EACH 1 BIT=DOT ON, 2 BYTES.
-020C   #$F0
-020D   #$00                   
-020E   #$00                   
-020F   #$00                				;'KBECHO' - IF BIT 7=1 THEN "ECHO" EACH KEY TO THE DISPLAY.   
-0210   #$00                   			;'NOLFCR' - IF BIT 7=1 THEN NO AUTOMATIC LINE FEED AFTER CR.
-0211   #$00                   			;'NOSCRL' - IF BIT 7=1 THEN INSTEAD OF SCROLLING, THE TEXT WINDOW IS CLEARED AND THE CURSOR IS HOMED WHEN TEXT GOES BEYOND THE BOOTOM LINE.
-0212   #$00                   			;'UNDRLN' - IF BIT 7=1 THEN ALL CHARACTERS UNDERLINED WHEN DRAWN.
-0213   #$00              				;'NOCLIK' - PRESENCE OF AUDIBLE KEY CLICK. DEFAULT VALUE: $00 - IF BIT 7=1 THEN NO CLICK WHEN A KEY IS PRESSED.
-0214   #$00                   			;'NOBELL' - IF BIT 7=1 THEN BEL CHARACTER IS IGNORED.
-0215   #$00                   			;'RVIDEO' - IF BIT 7=1 THEN CHARACTERS ARE DRAWN IN REVERSE VIDEO.
-0216   #$00                   			;'SHODEL' - IF BIT 7=1 THEN DISPLAY DEL (ROBOUT) AS A CHARACTER SHAPE
-0217   #$00                   			;'SHOUL' - IF BIT 7=1 THEN CHARACTER CELL IS ERASED BEFORE THE UNDERLINE CHARACTER IS DRAWN.
-0218   #$00                   			;'EXCCP' - IF BIT 7=1 THEN CALL USER CONTROL CHARACTER PROCESSOR.
-0219   #$00                   			;'EXTHI' - IF BIT 7=1 THEN CALL USER RUTINE TO PROCESS ALL CHARACTERS WHEN BIT 7 SET.
-021A   #$00                   			;'EXFONT' - IF BIT 7=1 THEN USE EXTERNAL FONT TABLE.
-021B   #$00                   
-021C   #$00                   
-021D   #$00                   
-021E   #$18                				;'NLINET' NUMBER OF TEXT LINES IN THE TEXT WINDOW.   
-021F   #$00                   			;'YTDOWN' 255-(Y COORDINATE OF TOP OF THE TEXT WINDOW).
-0220   #$05 							;'DBCDLA' - WAIT TIME IN MILLISECONDS ALLOWED FOR CONTACT BOUNCE.
-0221   #$C3                				;'RPTRAT' - KEYBOARD REPEAT RATE. DEFAULT VALUE: $C3; INTERCHARACTER REPEAT DELAY IN 256uS UNITS.
-0222   #$06 							;'CURDLA' - CURSOR FLASH RATE. DEFAULT VALUE: $06
-0223   #$05                  
-0224   #$05 							;'CLKPER' - PITCH OF AUDIBLE KEY CLICK. DEFAULT VALUE: $05 - CLICK WAVEFORM PERIOD IN UNITS OF 200 MICROSECONDS.
-0225   #$20                				;'CLKVOL' - VOLUME OF AUDIBLE KEY CLICK. DEFAULT VALUE: $20	- CLICK VOLUME, $00 = MINIMUM, $7F = MAXIMUM.
-0226   #$02                   			;'CLKCY' - DURATION OF AUDIBLE KEY CLICK. DEFAULT VALUE: $02 - CLICK DURATION IN UNITS OF COMPLETE WAVEFORM CYCLES
-0227   #$05								;'BELPER' - PITCH OF AUDIBLE BELL TONE. DEFAULT VALUE: $05 - BELL SOUND WAVEFORM PERIOD IN UNITS OF 200 MICROSECONDS.
-0228   #$40                				;'BELVOL' - VOLUME OF AUDIBLE BELL TONE. DEFAULT VALUE: $40	- BELL SOUND VOLUME, $00 = MINIMUM, $7F MAXIMUM.
-0229   #$0C                   			;'BELCY' - DURATION OF AUDIBLE KEY CLICK. DEFAULT VALUE: $0C - BELL SOUND DURATION IN UNITS OF COMPLETE WAVEFORM CYCLES.
-022A   #$07                   
-022B   #$08                   
-022C   #$09 
-022D   #$0C                
-022E   #$18                   
-022F   #$1B   							;'QEXCC' - ADDRESS OF EXTERNAL CONTROL CHARACTER PROCESSOR IF USED. LOW BYTE               
-0230   #$03                   
-0231   #$1B         					;'QEXFNT' - ADDRESS OF EXTERNAL FONT TABLE IF USED. LOW BYTE         
-0232   #$03                   
-0233   #$1B        						;'QEXHI7' - ADDRESS OF EXTERNAL PROCESSOR FOR CHARACTERS WITH BIT 7=1           
-0234   #$03              
-0235   #$50 
-0236   #$FD                
-0237   #$00          					;'EXFTBK' - MEMORY BANK NUMBER CONTAINING EXTERNAL FONT TABLE.         
-0238   #$C0								;'YLNLIM' - LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS
-0239   #$00                
-023A   #$00              				;'UKINLN' - IF BIT 7=1 THEN IRRECOGNIZED KEYS ARE ACCEPTED FOR ENTRY POINTS INLINE AND ENDLINE.     
-023B   #$BC
-023C   #$C5
-023D   #$00             
-.END
+0200  .byte  $01        						;'COL' - CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80.
+0201  .byte  $01                				;'LINE' - CURRENT LINE NUMBER OF TEXT CURSOR. 1-NLINET.
+0202  .byte  $00                  	 			;X COORDINATE OF THE GRAPHIC CURSOR POSITION, 2 BYTES.
+0203  .byte  $00                   
+0204  .byte  $00                   				;Y COORDINATE OF THE GRAPHIC CURSOR POSITION, 2 BYTES.
+0205  .byte  $00                   
+0206  .byte  $00                   				;X GRAPHIC COORDINATE "REGISTER", 2 BYTES.
+0207  .byte  $00                   
+0208  .byte  $00                   				;Y GRAPHIC COORDINATE "REGISTER", 2 BYTES.
+0209  .byte  $00                   
+020A  .byte  $80                  				;'GMODE' - GRAPHIC DRAWING MODE, $00=MOVE, $40=ERASE, $80=DRAW, $C0=FLIP. ADD $20 FOR DASHED LINES.
+020B  .byte  $F0	                			;'DSHPAT' ;RECIRCULATING DASHED LINE PATTERN, EACH 1 BIT=DOT ON, 2 BYTES.
+020C  .byte  $F0
+020D  .byte  $00                   
+020E  .byte  $00                   
+020F  .byte  $00                				;'KBECHO' - IF BIT 7=1 THEN "ECHO" EACH KEY TO THE DISPLAY.   
+0210  .byte  $00                   				;'NOLFCR' - IF BIT 7=1 THEN NO AUTOMATIC LINE FEED AFTER CR.
+0211  .byte  $00                   				;'NOSCRL' - IF BIT 7=1 THEN INSTEAD OF SCROLLING, THE TEXT WINDOW IS CLEARED AND THE CURSOR IS HOMED WHEN TEXT GOES BEYOND THE BOOTOM LINE.
+0212  .byte  $00                   				;'UNDRLN' - IF BIT 7=1 THEN ALL CHARACTERS UNDERLINED WHEN DRAWN.
+0213  .byte  $00              					;'NOCLIK' - PRESENCE OF AUDIBLE KEY CLICK. DEFAULT VALUE: $00 - IF BIT 7=1 THEN NO CLICK WHEN A KEY IS PRESSED.
+0214  .byte  $00                  	 			;'NOBELL' - IF BIT 7=1 THEN BEL CHARACTER IS IGNORED.
+0215  .byte  $00                   				;'RVIDEO' - IF BIT 7=1 THEN CHARACTERS ARE DRAWN IN REVERSE VIDEO.
+0216  .byte  $00                   				;'SHODEL' - IF BIT 7=1 THEN DISPLAY DEL (ROBOUT) AS A CHARACTER SHAPE
+0217  .byte  $00                   				;'SHOUL' - IF BIT 7=1 THEN CHARACTER CELL IS ERASED BEFORE THE UNDERLINE CHARACTER IS DRAWN.
+0218  .byte  $00                   				;'EXCCP' - IF BIT 7=1 THEN CALL USER CONTROL CHARACTER PROCESSOR.
+0219  .byte  $00                   				;'EXTHI' - IF BIT 7=1 THEN CALL USER RUTINE TO PROCESS ALL CHARACTERS WHEN BIT 7 SET.
+021A  .byte  $00                   				;'EXFONT' - IF BIT 7=1 THEN USE EXTERNAL FONT TABLE.
+021B  .byte  $00                   
+021C  .byte  $00                   
+021D  .byte  $00                   
+021E  .byte  $18                				;'NLINET' NUMBER OF TEXT LINES IN THE TEXT WINDOW.   
+021F  .byte  $00                   				;'YTDOWN' 255-(Y COORDINATE OF TOP OF THE TEXT WINDOW).
+0220  .byte  $05 								;'DBCDLA' - WAIT TIME IN MILLISECONDS ALLOWED FOR CONTACT BOUNCE.
+0221  .byte  $C3                				;'RPTRAT' - KEYBOARD REPEAT RATE. DEFAULT VALUE: $C3; INTERCHARACTER REPEAT DELAY IN 256uS UNITS.
+0222  .byte  $06 								;'CURDLA' - CURSOR FLASH RATE. DEFAULT VALUE: $06
+0223  .byte  $05                  
+0224  .byte  $05 								;'CLKPER' - PITCH OF AUDIBLE KEY CLICK. DEFAULT VALUE: $05 - CLICK WAVEFORM PERIOD IN UNITS OF 200 MICROSECONDS.
+0225  .byte  $20                				;'CLKVOL' - VOLUME OF AUDIBLE KEY CLICK. DEFAULT VALUE: $20	- CLICK VOLUME, $00 = MINIMUM, $7F = MAXIMUM.
+0226  .byte  $02                   				;'CLKCY' - DURATION OF AUDIBLE KEY CLICK. DEFAULT VALUE: $02 - CLICK DURATION IN UNITS OF COMPLETE WAVEFORM CYCLES
+0227  .byte  $05								;'BELPER' - PITCH OF AUDIBLE BELL TONE. DEFAULT VALUE: $05 - BELL SOUND WAVEFORM PERIOD IN UNITS OF 200 MICROSECONDS.
+0228  .byte  $40                				;'BELVOL' - VOLUME OF AUDIBLE BELL TONE. DEFAULT VALUE: $40	- BELL SOUND VOLUME, $00 = MINIMUM, $7F MAXIMUM.
+0229  .byte  $0C                   				;'BELCY' - DURATION OF AUDIBLE KEY CLICK. DEFAULT VALUE: $0C - BELL SOUND DURATION IN UNITS OF COMPLETE WAVEFORM CYCLES.
+022A  .byte  $07                   
+022B  .byte  $08                   
+022C  .byte  $09 
+022D  .byte  $0C                
+022E  .byte  $18                   
+022F  .byte  $1B   								;'QEXCC' - ADDRESS OF EXTERNAL CONTROL CHARACTER PROCESSOR IF USED. LOW BYTE               
+0230  .byte  $03                   
+0231  .byte  $1B         						;'QEXFNT' - ADDRESS OF EXTERNAL FONT TABLE IF USED. LOW BYTE         
+0232  .byte  $03                   
+0233  .byte  $1B        						;'QEXHI7' - ADDRESS OF EXTERNAL PROCESSOR FOR CHARACTERS WITH BIT 7=1           
+0234  .byte  $03              
+0235  .byte  $50 
+0236  .byte  $FD                
+0237  .byte  $00          						;'EXFTBK' - MEMORY BANK NUMBER CONTAINING EXTERNAL FONT TABLE.         
+0238  .byte  $C0								;'YLNLIM' - LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS
+0239  .byte  $00                
+023A  .byte  $00              					;'UKINLN' - IF BIT 7=1 THEN IRRECOGNIZED KEYS ARE ACCEPTED FOR ENTRY POINTS INLINE AND ENDLINE.     
+023B  .byte  $BC
+023C  .byte  $C5
+023D  .byte  $00             
+.END 
+ 
 
-
-;FILE HEADER 58 00 00 00 0F 03 06 03 90 00
+;FILE .byte HEADER 58 00 00 00 0F 03 06 03 90 00
 
 ;JUMP TABLE TO I-O ROUTINES, GRAPHICS, ETC. 
 
@@ -83,7 +83,7 @@
 0312   4C 95 CD             JMP $CD95			; CLRDSP - TO CLEAR THE ENTIRE 480 BY 256 SCREEN
 0315   4C D1 D1             JMP $D1D1			; DRWLEG - TO DRAW THE FUNCTION KEY LEGEND BOXES AND THEIR LABELS
 0318   4C 1B 03             JMP L031B			
-031B   4C 18 E6   L031B     JMP $E618
+031B   4C 18 E6   L031B     JMP $E618			; SKIPS GRAPHIC RUTINES IF NO GRAPHIC DRIVER
 031E   4C 19 C6             JMP $C619			; INLINE - TO INPUT ENTIRE LINE FROM THE KEYBOARD, TITH EDITING PERMITTED.
 0321   4C 1B C6             JMP $C61B			; EDLINE - TO EDIT AN ENTIRE LINE USING THE KEYBOARD.
 0324   4C 1B 03             JMP L031B			; SDRAW - TO DRAW A SOLID VECTOR FROM THE CURSOR TO (XX,YY)
@@ -134,38 +134,38 @@
 ;THE FIRST ZERO VALUE MARKS THE END OF TABLE. THE VALUES MUST BE STORED IN ASCENDING SEQUENCE. REMEMBER THAT THE LEFTMOST CHARACTER POSITION IS COLUMN ONE, NOT ZERO!
 
 * = $06E0
-06E0  	#$09
-06E1	#$11                
-06E2   	#$19
-06E3	#$21
-06E4	#$29             
-06E5 	#$31
-06E6	#$39                
-06E7   	#$41
-06E8	#$49                
-06E9   	#$00                   
-06EA   	#$00                   
-06EB   	#$00                   
-06EC   	#$00                   
-06ED   	#$00                   
-06EE   	#$00                   
-06EF   	#$00                   
-06F0   	#$00                   
-06F1   	#$00                   
-06F2   	#$00                   
-06F3   	#$00                   
-06F4   	#$00                   
-06F5   	#$00                   
-06F6   	#$00                   
-06F7   	#$00                   
-06F8   	#$00                   
-06F9   	#$00                   
-06FA   	#$00                   
-06FB   	#$00                   
-06FC   	#$00                   
-06FD   	#$00                   
-06FE   	#$00                   
-06FF   	#$00                   
+06E0  .byte 	$09
+06E1  .byte 	$11                
+06E2  .byte  	$19
+06E3  .byte 	$21
+06E4  .byte 	$29             
+06E5  .byte 	$31
+06E6  .byte 	$39                
+06E7  .byte  	$41
+06E8  .byte 	$49                
+06E9  .byte  	$00                   
+06EA  .byte  	$00                   
+06EB  .byte  	$00                   
+06EC  .byte  	$00                   
+06ED  .byte  	$00                   
+06EE  .byte  	$00                   
+06EF  .byte  	$00                   
+06F0  .byte  	$00                   
+06F1  .byte  	$00                   
+06F2  .byte  	$00                   
+06F3  .byte  	$00                   
+06F4  .byte  	$00                   
+06F5  .byte  	$00                   
+06F6  .byte  	$00                   
+06F7  .byte  	$00                   
+06F8  .byte  	$00                   
+06F9  .byte  	$00                   
+06FA  .byte  	$00                   
+06FB  .byte  	$00                   
+06FC  .byte  	$00                   
+06FD  .byte  	$00                   
+06FE  .byte  	$00                   
+06FF  .byte  	$00                   
 .END
 
 
@@ -210,78 +210,120 @@ INITIO		= $030F			; TO CLEAR THE SCREEN AND SET DEFAULT VALUES OF DISPLAY PARAME
 
 
 * = $C5B0
-C5B0   8A                   TXA
-C5B1   2A                   ROL A
-C5B2   8B                   ???                ;%10001011
-C5B3   2F                   ???                ;%00101111 '/'
-C5B4   8C 2D 8D             STY $8D2D
-C5B7   2B                   ???                ;%00101011 '+'
-C5B8   FF                   ???                ;%11111111
-C5B9   FF                   ???                ;%11111111
-C5BA   FF         LC5BA     ???                ;%11111111
-C5BB   FF                   ???                ;%11111111
-C5BC   02                   ???                ;%00000010
-C5BD   03                   ???                ;%00000011
-C5BE   05 07                ORA $07
-C5C0   08                   PHP
-C5C1   09 0A                ORA #$0A
-C5C3   0B                   ???                ;%00001011
-C5C4   0C                   ???                ;%00001100
-C5C5   0D 12 17             ORA $1712
-C5C8   18                   CLC
-C5C9   1A                   ???                ;%00011010
-C5CA   1B                   ???                ;%00011011
-C5CB   7F                   ???                ;%01111111
-C5CC   8E A0 A1             STX $A1A0
-C5CF   A2 A3                LDX #$A3
-C5D1   A4 A5                LDY $A5
-C5D3   A6 B0                LDX $B0
-C5D5   B1 B2                LDA ($B2),Y
-C5D7   B3                   ???                ;%10110011
-C5D8   B4 FF                LDY $FF,X
-C5DA   FF                   ???                ;%11111111
-C5DB   82                   ???                ;%10000010
-C5DC   C6 03                DEC $03
-C5DE   03                   ???                ;%00000011
-C5DF   8B                   ???                ;%10001011
-C5E0   C6 96                DEC $96
-C5E2   C6 9C                DEC $9C
-C5E4   C6 AE                DEC $AE
-C5E6   C6 B4                DEC $B4
-C5E8   C6 CF                DEC $CF
-C5EA   C6 EB                DEC $EB
-C5EC   C6 F4                DEC $F4
-C5EE   C6 0A                DEC $0A
-C5F0   C7                   ???                ;%11000111
-C5F1   10 C7                BPL LC5BA
-C5F3   16 C7                ASL $C7,X
-C5F5   1C                   ???                ;%00011100
-C5F6   C7                   ???                ;%11000111
-C5F7   22                   ???                ;%00100010 '"'
-C5F8   C7                   ???                ;%11000111
-C5F9   28                   PLP
-C5FA   C7                   ???                ;%11000111
-C5FB   F4                   ???                ;%11110100
-C5FC   C6 CF                DEC $CF
-C5FE   C6 9C                DEC $9C
-C600   C6 34                DEC $34
-C602   C7                   ???                ;%11000111
-C603   B4 C6                LDY $C6,X
-C605   46 C7                LSR $C7
-C607   4C C7 52             JMP $52C7
-C60A   C7                   ???                ;%11000111
-C60B   CF                   ???                ;%11001111
-C60C   C6 59                DEC $59
-C60E   C7                   ???                ;%11000111
-C60F   65 C7                ADC $C7
-C611   B4 C6                LDY $C6,X
-C613   EB                   ???                ;%11101011
-C614   C6 00                DEC $00
-C616   00                   BRK
-C617   00                   BRK
-C618   00                   BRK
-C619   A0 00                LDY #$00					;INLINE ROUTINE
-C61B   84 FD                STY $FD						;EDLINE RUTINE
+;KEYBOARD ENTRY
+C5B0 .byte  $8A ;'*' MULTIPLY
+C5B1 .byte  $2A ;'*' MULTIPLY
+C5B2 .byte  $8B ;'/' DIVIDE
+C5B3 .byte  $2F ;'/' DIVIDE
+C5B4 .byte  $8C ;'-' MINUS
+C5B5 .byte  $2D ;'-' MINUS
+C5B6 .byte  $8D ;'+' PLUS
+C5B7 .byte  $2B ;'+' PLUS
+C5B8 .byte  $FF 
+C5B9 .byte  $FF 
+C5BA .byte  $FF 
+C5BB .byte  $FF 
+
+;KEYBOARD SPECIAL KEYS
+C5BC .byte  $02 ;'STX'
+C5BD .byte  $03 ;'ETX'
+C5BE .byte  $05 ;'ENG'
+C5BF .byte  $07 ;'BEL'
+C5C0 .byte  $08 ;'BS'      
+C5C1 .byte  $09 ;'HT'
+C5C2 .byte  $0A ;'LF'      
+C5C3 .byte  $0B ;'VT'      
+C5C4 .byte  $0C ;'FF'     
+C5C5 .byte  $0D ;'RETURN'
+C5C6 .byte  $12 ;'DC2'
+C5C7 .byte  $17 ;'ETB'      
+C5C8 .byte  $18 ;'CAN'      
+C5C9 .byte  $1A ;'SUB'      
+C5CA .byte  $1B ;'ESC'      
+C5CB .byte  $7F ;'DEL'      
+C5CC .byte  $8E ;'ENTER'
+C5CD .byte  $A0 ;'CURSOR UP'
+C5CE .byte  $A1 ;'CURSOR LEFT'     
+C5CF .byte  $A2 ;'CURSOR RIGHT'
+C5D0 .byte  $A3 ;'CURSOR DOWN'     
+C5D1 .byte  $A4 ;'HOME'
+C5D2 .byte  $A5 ;'DELETE'      
+C5D3 .byte  $A6 ;'INSERT'
+C5D4 .byte  $B0 ;'SHIFT/CURSOR UP'   
+C5D5 .byte  $B1 ;'SHIFT/CURSOR LEFT' 
+C5D6 .byte  $B2 ;'SHIFT/CURSOR RIGHT' 
+C5D7 .byte  $B3 ;'SHIFT/CURSOR DOWN' 
+C5D8 .byte  $B4 ;'SHIFT/ HOME 
+C5D9 .byte  $FF      
+C5DA .byte  $FF      
+
+;JUMP TABLE FOR UNKNOWN KEYBOARD ENTRY
+C5DB .byte  $82       
+C5DC .byte  $C6 
+C5DD .byte  $03 ;'CTRL-C'      
+C5DE .byte  $03            
+C5DF .byte  $8B            
+C5E0 .byte  $C6 
+C5E1 .byte  $96             
+C5E2 .byte  $C6 
+C5E3 .byte  $9C             
+C5E4 .byte  $C6
+C5E5 .byte  $AE             
+C5E6 .byte  $C6 
+C5E7 .byte  $B4             
+C5E8 .byte  $C6 
+C5E9 .byte  $CF             
+C5EA .byte  $C6 
+C5EB .byte  $EB             
+C5EC .byte  $C6 
+C5ED .byte  $F4             
+C5EE .byte  $C6 
+C5EF .byte  $0A             
+C5F0 .byte  $C7             
+C5F1 .byte  $10 
+C5F2 .byte  $C7             
+C5F3 .byte  $16 
+C5F4 .byte  $C7             
+C5F5 .byte  $1C             
+C5F6 .byte  $C7             
+C5F7 .byte  $22             
+C5F8 .byte  $C7             
+C5F9 .byte  $28             
+C5FA .byte  $C7             
+C5FB .byte  $F4             
+C5FC .byte  $C6 
+C5FD .byte  $CF             
+C5FE .byte  $C6 
+C5FF .byte  $9C             
+C600 .byte  $C6 
+C601 .byte  $34             
+C602 .byte  $C7             
+C603 .byte  $B4 
+C604 .byte  $C6             
+C605 .byte  $46 
+C606 .byte  $C7             
+C607 .byte  $4C 
+C608 .byte  $C7 
+C609 .byte  $52             
+C60A .byte  $C7             
+C60B .byte  $CF             
+C60C .byte  $C6 
+C60D .byte  $59             
+C60E .byte  $C7             
+C60F .byte  $65 
+C610 .byte  $C7             
+C611 .byte  $B4 
+C612 .byte  $C6             
+C613 .byte  $EB             
+C614 .byte  $C6 
+C615 .byte  $00             
+C616 .byte  $00             
+C617 .byte  $00             
+C618 .byte  $00             
+
+
+C619   A0 00      INLINE    LDY #$00					;INLINE ROUTINE
+C61B   84 FD      EDLINE    STY $FD						;EDLINE RUTINE
 C61D   D8                   CLD							;CLEAR DECIMAL MODE
 C61E   AD 3D 02             LDA $023D
 C621   8D DA 02             STA $02DA
@@ -289,7 +331,7 @@ C624   8E D6 02             STX $02D6
 C627   20 37 C8   LC627     JSR LC837
 C62A   A9 00      LC62A     LDA #$00
 C62C   8D D7 02             STA $02D7
-C62F   20 75 C9   LC62F     JSR LC975
+C62F   20 75 C9   LC62F     JSR GETKEY
 C632   C9 7F                CMP #$7F
 C634   B0 0A                BCS LC640
 C636   C9 20                CMP #$20
@@ -313,7 +355,7 @@ C65C   F0 1D                BEQ LC67B
 C65E   CA                   DEX
 C65F   CA                   DEX
 C660   10 F7                BPL LC659
-C662   2C 3A 02             BIT $UKINLN					;If bit 7=1 then unrecognized keys are accepted for entry points INLINE and EDLINE. 'UKINLN'
+C662   2C 3A 02             BIT UKINLN					;If bit 7=1 then unrecognized keys are accepted for entry points INLINE and EDLINE. 'UKINLN'
 C665   30 D3                BMI LC63A
 C667   10 C6                BPL LC62F
 C669   8A         LC669     TXA
@@ -353,7 +395,7 @@ C6B8   B0 0B                BCS LC6C5
 C6BA   C5 FD                CMP $FD
 C6BC   B0 07                BCS LC6C5
 C6BE   A8                   TAY
-C6BF   20 41 CE   LC6BF     JSR LCE41
+C6BF   20 41 CE   LC6BF     JSR LINEFD
 C6C2   4C 2A C6             JMP LC62A
 C6C5   C4 FD      LC6C5     CPY $FD
 C6C7   D0 44                BNE LC70D
@@ -372,7 +414,7 @@ C6E1   C4 FD      LC6E1     CPY $FD
 C6E3   D0 28                BNE LC70D
 C6E5   8C D5 02             STY $02D5
 C6E8   4C DB C6             JMP LC6DB
-C6EB   20 6F CD             JSR LCD6F
+C6EB   20 6F CD             JSR CLRHTW
 C6EE   8C D5 02   LC6EE     STY $02D5
 C6F1   4C 2A C6             JMP LC62A
 C6F4   18                   CLC
@@ -396,7 +438,7 @@ C719   4C 2A C6             JMP LC62A
 C71C   C0 00                CPY #$00
 C71E   D0 ED                BNE LC70D
 C720   F0 D5                BEQ LC6F7
-C722   20 75 C9             JSR LC975
+C722   20 75 C9             JSR GETKEY
 C725   4C 3A C6             JMP LC63A
 C728   20 93 C7             JSR LC793
 C72B   4C 2F C6             JMP LC62F
@@ -410,7 +452,7 @@ C73C   4C 2A C6             JMP LC62A
 C73F   CC D5 02   LC73F     CPY $02D5
 C742   F0 F5                BEQ LC739
 C744   D0 C7                BNE LC70D
-C746   20 72 CD             JSR LCD72
+C746   20 72 CD             JSR HOMETW
 C749   4C EE C6             JMP LC6EE
 C74C   20 49 C8             JSR LC849
 C74F   4C 2F C6             JMP LC62F
@@ -426,7 +468,7 @@ C767   F0 A4                BEQ LC70D
 C769   20 DA CE             JSR LCEDA
 C76C   C8                   INY
 C76D   D0 F6                BNE LC765
-C76F   CC 38 02   LC76F     CPY $YLNLIM						;LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS 'YLNLIM'
+C76F   CC 38 02   LC76F     CPY YLNLIM						;LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS 'YLNLIM'
 C772   90 03                BCC LC777
 C774   4C 55 D1             JMP LD155
 C777   2C D7 02   LC777     BIT $02D7
@@ -477,7 +519,7 @@ C7D9   88                   DEY
 C7DA   CC D4 02             CPY $02D4
 C7DD   F0 2F                BEQ LC80E
 C7DF   90 2D                BCC LC80E
-C7E1   CC 38 02             CPY $YLNLIM						;LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS. 'YLNLIM'
+C7E1   CC 38 02             CPY YLNLIM						;LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS. 'YLNLIM'
 C7E4   B0 2D                BCS LC813
 C7E6   98                   TYA
 C7E7   AC D4 02             LDY $02D4
@@ -546,7 +588,7 @@ C86B   60         LC86B     RTS								;RETURN FROM SUBRUTINE
 C86C   8D D3 02   LC86C     STA $02D3
 C86F   8C D4 02             STY $02D4
 C872   A4 FD                LDY $FD
-C874   CC 38 02             CPY $YLNLIM						;LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS. 'YLNLIM'
+C874   CC 38 02             CPY YLNLIM						;LINE SIZE LIMIT FOR INLINE AND ENDLINE ENTRY POINTS. 'YLNLIM'
 C877   90 06                BCC LC87F
 C879   20 55 D1             JSR LD155
 C87C   4C AF C8             JMP LC8AF
@@ -667,9 +709,9 @@ C96C   AC DB 02             LDY $02DB
 C96F   4C 51 C9             JMP LC951
 C972   84 FD      LC972     STY $FD
 C974   60                   RTS								;RETURN FROM SUBRUTINE
-C975   8E CD 02   LC975     STX $02CD						;GETKEY RUTINE
+C975   8E CD 02   GETKEY     STX $02CD						;GETKEY RUTINE
 C978   8C CE 02             STY $02CE
-C97B   20 92 D0             JSR LD092
+C97B   20 92 D0             JSR ONTCR
 C97E   20 1C D1             JSR LD11C
 C981   20 D7 CA             JSR LCAD7
 C984   A9 40                LDA #$40
@@ -704,7 +746,7 @@ C9C4   D0 4B                BNE LCA11
 C9C6   CA         LC9C6     DEX
 C9C7   D0 CD                BNE LC996
 C9C9   8E 0E 02             STX $020E
-C9CC   20 92 D0   LC9CC     JSR LD092
+C9CC   20 92 D0   LC9CC     JSR ONTCR
 C9CF   A9 00      LC9CF     LDA #$00
 C9D1   8D CA 02             STA $02CA
 C9D4   AD 22 02             LDA CURDLA						;DETERMINES CURSOR BLINK SPEED, 0-NO BLINK 'CURDLA'
@@ -721,30 +763,30 @@ C9ED   2C 1B 02             BIT $021B
 C9F0   10 DA                BPL LC9CC
 C9F2   AD 22 02             LDA CURDLA						;DETERMINES CURSOR BLINK SPEED, 0-NO BLINK 'CURDLA'
 C9F5   F0 E7                BEQ LC9DE
-C9F7   20 8C D0             JSR LD08C
+C9F7   20 8C D0             JSR OFFTCR
 C9FA   4C CF C9             JMP LC9CF
 C9FD   CE CA 02   LC9FD     DEC $02CA
 CA00   4C DE C9             JMP LC9DE
-CA03   20 8C D0   LCA03     JSR LD08C
+CA03   20 8C D0   LCA03     JSR OFFTCR
 CA06   20 BD CA             JSR LCABD
 CA09   20 85 CA   LCA09     JSR LCA85
 CA0C   D0 D0                BNE LC9DE
 CA0E   CA                   DEX
 CA0F   D0 F8                BNE LCA09
-CA11   AD 21 02   LCA11     LDA $RPTRAT						;INTERCHARACTER REPEAT DELAY IN 256uS UNITS. 'RPTRAT'
+CA11   AD 21 02   LCA11     LDA RPTRAT						;INTERCHARACTER REPEAT DELAY IN 256uS UNITS. 'RPTRAT'
 CA14   8D E5 BF             STA $BFE5						;SYSTEM 1 6522 TIMER 1
-CA17   20 8C D0             JSR LD08C
+CA17   20 8C D0             JSR OFFTCR
 CA1A   20 F6 CA             JSR LCAF6
 CA1D   20 6B D1             JSR LD16B
-CA20   2C 0F 02             BIT $KBECHO						;IF BIT 7=1 THAN "ECHO" EACH KEY TO THE DISPLAY. 
+CA20   2C 0F 02             BIT KBECHO						;IF BIT 7=1 THAN "ECHO" EACH KEY TO THE DISPLAY. 
 CA23   10 03                BPL LCA28
-CA25   20 E6 CB             JSR LCBE6
+CA25   20 E6 CB             JSR OUTCH
 CA28   AE CD 02   LCA28     LDX $02CD
 CA2B   AC CE 02             LDY $02CE
 CA2E   4C 2F D1             JMP LD12F
-CA31   A9 00                LDA #$00						;'IFKEY' ROUTINE
+CA31   A9 00      IFKEY     LDA #$00						;'IFKEY' ROUTINE
 CA33   8D 0D 02             STA $020D
-CA36   8E CD 02             STX $02CD						;'TSTKEY' ROUTINE
+CA36   8E CD 02   TSTKEY    STX $02CD						;'TSTKEY' ROUTINE
 CA39   8C CE 02             STY $02CE
 CA3C   20 1C D1             JSR LD11C
 CA3F   20 D7 CA             JSR LCAD7
@@ -754,7 +796,7 @@ CA47   20 8B CA             JSR LCA8B
 CA4A   D0 03                BNE LCA4F
 CA4C   18         LCA4C     CLC
 CA4D   90 2D                BCC LCA7C
-CA4F   AE 20 02   LCA4F     LDX $DBCDLA						;Wait time in milliseconds allowed for contact bounce. 'DBCDLA'
+CA4F   AE 20 02   LCA4F     LDX DBCDLA						;Wait time in milliseconds allowed for contact bounce. 'DBCDLA'
 CA52   20 85 CA   LCA52     JSR LCA85
 CA55   F0 F5                BEQ LCA4C
 CA57   CA                   DEX
@@ -797,11 +839,12 @@ CAA5   BD B0 CA             LDA $CAB0,X
 CAA8   A6 FA                LDX $FA
 CAAA   2D E1 BF             AND $BFE1						;SYSTEM 1 6522 KEYBOARD PORT DATA REGISTER
 CAAD   4C 2F D1             JMP LD12F
-CAB0   04                   ???                ;%00000100
-CAB1   08                   PHP
-CAB2   10 20                BPL LCAD4
-CAB4   40                   RTI
-CAB5   80                   ???                ;%10000000
+CAB0   .byte $04                   							;%00000100 - keyboard ROW
+CAB1   .byte $08       		    							;%00001000
+CAB2   .byte $10											;%00010000
+cab3   .byte $20        									;%00100000
+CAB4   .byte $40       										;%01000000
+CAB5   .byte $80                   							;%10000000
 CAB6   A9 C5      LCAB6     LDA #$C5
 CAB8   E9 01      LCAB8     SBC #$01
 CABA   D0 FC                BNE LCAB8
@@ -820,7 +863,7 @@ CACA   84 FA                STY $FA
 CACC   05 FA                ORA $FA
 CACE   49 0F                EOR #$0F
 CAD0   8D 0D 02             STA $020D
-CAD3   AE 20 02             LDX $DBCDLA						;WAIT TIME IN MILLISECONDS ALLOWED FOR CONTACT BOUNCE. 'DBCDLA'
+CAD3   AE 20 02             LDX DBCDLA						;WAIT TIME IN MILLISECONDS ALLOWED FOR CONTACT BOUNCE. 'DBCDLA'
 CAD6   60                   RTS								;RETURN FROM SUBRUTINE
 CAD7   AD EC BF   LCAD7     LDA $BFEC						;SYSTEM 1 6522 PERIPHERIAL CONTROL REGISTER
 CADA   09 0B                ORA #$0B
@@ -840,8 +883,8 @@ CAF5   60         LCAF5     RTS								;RETURN FROM SUBRUTINE
 CAF6   AE 0D 02   LCAF6     LDX $020D
 CAF9   BD 5C CB             LDA $CB5C,X
 CAFC   85 FA                STA $FA
-CAFE   8D C5 BF             STA $BFC5					;RESET KEYBOARD SCAN COUNTER
-CB01   AD E1 BF             LDA $BFE1					;SYSTEM 1 6522 KEYBOARD PORT DATA REGISTER
+CAFE   8D C5 BF             STA $BFC5						;RESET KEYBOARD SCAN COUNTER
+CB01   AD E1 BF             LDA $BFE1						;SYSTEM 1 6522 KEYBOARD PORT DATA REGISTER
 CB04   2C 7C CB             BIT $CB7C
 CB07   F0 1C                BEQ LCB25
 CB09   2C 7D CB             BIT $CB7D
@@ -855,7 +898,7 @@ CB18   C9 61                CMP #$61
 CB1A   90 2F                BCC LCB4B
 CB1C   C9 7B                CMP #$7B
 CB1E   B0 2B                BCS LCB4B
-CB20   38         LCB20     SEC							;SET CARRY FLAG
+CB20   38         LCB20     SEC								;SET CARRY FLAG
 CB21   E9 20                SBC #$20
 CB23   D0 26                BNE LCB4B
 CB25   E0 3D      LCB25     CPX #$3D
@@ -863,7 +906,7 @@ CB27   A5 FA                LDA $FA
 CB29   90 04                BCC LCB2F
 CB2B   09 10                ORA #$10
 CB2D   B0 1C                BCS LCB4B
-CB2F   C9 61      LCB2F     CMP #$61
+CB2F   C9 61      LCB2F     CMP #$61						;97? SO MORE THAN KEYS
 CB31   90 06                BCC LCB39
 CB33   C9 7B                CMP #$7B
 CB35   90 E9                BCC LCB20
@@ -878,105 +921,169 @@ CB44   A5 FA                LDA $FA
 CB46   60                   RTS								;RETURN FROM SUBRUTINE
 CB47   AA         LCB47     TAX
 CB48   BD BC CB             LDA $CBBC,X
-CB4B   48         LCB4B     PHA
+CB4B   48         LCB4B     PHA								;SAVE ACCUMULATOR
 CB4C   8D C5 BF             STA $BFC5						;RESET KEYBOARD SCAN COUNTER
 CB4F   AD E1 BF             LDA $BFE1						;SYSTEM 1 6522 KEYBOARD PORT DATA REGISTER
 CB52   29 08                AND #$08
 CB54   D0 04                BNE LCB5A
-CB56   68                   PLA
+CB56   68                   PLA								;RECOVER ACCUMULATOR
 CB57   29 1F                AND #$1F
 CB59   60                   RTS								;RETURN FROM SUBRUTINE
 CB5A   68         LCB5A     PLA
 CB5B   60                   RTS								;RETURN FROM SUBRUTINE
-CB5C   00                   BRK
-CB5D   1B                   ???                ;%00011011
-CB5E   31 32                AND ($32),Y
-CB60   33                   ???                ;%00110011 '3'
-CB61   34                   ???                ;%00110100 '4'
-CB62   35 36                AND $36,X
-CB64   37                   ???                ;%00110111 '7'
-CB65   38                   SEC								;SET CARRY FLAG
-CB66   39 30 2D             AND $2D30,Y
-CB69   3D 60 08             AND $0860,X
-CB6C   0F                   ???                ;%00001111
-CB6D   09 71                ORA #$71
-CB6F   77                   ???                ;%01110111 'w'
-CB70   65 72                ADC $72
-CB72   74                   ???                ;%01110100 't'
-CB73   79 75 69             ADC $6975,Y
-CB76   6F                   ???                ;%01101111 'o'
-CB77   70 5B                BVS LCBD4
-CB79   5C                   ???                ;%01011100 '\'
-CB7A   0A                   ASL A
-CB7B   7F                   ???                ;%01111111
-CB7C   20 40 61             JSR $6140
-CB7F   73                   ???                ;%01110011 's'
-CB80   64                   ???                ;%01100100 'd'
-CB81   66 67                ROR $67
-CB83   68                   PLA
-CB84   6A                   ROR A
-CB85   6B                   ???                ;%01101011 'k'
-CB86   6C 3B 27             JMP ($273B)
-CB89   7B                   ???                ;%01111011 '{'
-CB8A   0D 00 00             ORA $0000
-CB8D   00                   BRK
-CB8E   20 7A 78             JSR $787A
-CB91   63                   ???                ;%01100011 'c'
-CB92   76 62                ROR $62,X
-CB94   6E 6D 2C             ROR $2C6D
-CB97   2E 2F A5             ROL $A52F
-CB9A   A6 2E                LDX $2E
-CB9C   00                   BRK
-CB9D   80                   ???                ;%10000000
-CB9E   81 82                STA ($82,X)
-CBA0   83                   ???                ;%10000011
-CBA1   84 85                STY $85
-CBA3   86 87                STX $87
-CBA5   A3                   ???                ;%10100011
-CBA6   A2 8E                LDX #$8E
-CBA8   A4 A1                LDY $A1
-CBAA   A0 30                LDY #$30
-CBAC   00                   BRK
-CBAD   8C 36 8D             STY $8D36
-CBB0   8B                   ???                ;%10001011
-CBB1   35 8A                AND $8A,X
-CBB3   39 89 31             AND $3189,Y
-CBB6   34                   ???                ;%00110100 '4'
-CBB7   33                   ???                ;%00110011 '3'
-CBB8   37                   ???                ;%00110111 '7'
-CBB9   88                   DEY
-CBBA   38                   SEC								;SET CARRY FLAG
-CBBB   32                   ???                ;%00110010 '2'
-CBBC   22                   ???                ;%00100010 '"'
-CBBD   00                   BRK
-CBBE   00                   BRK
-CBBF   00                   BRK
-CBC0   00                   BRK
-CBC1   3C                   ???                ;%00111100 '<'
-CBC2   5F                   ???                ;%01011111 '_'
-CBC3   3E 3F 29             ROL $293F,X
-CBC6   21 40                AND ($40,X)
-CBC8   23                   ???                ;%00100011 '#'
-CBC9   24 25                BIT $25
-CBCB   5E 26 2A             LSR $2A26,X
-CBCE   28                   PLP
-CBCF   00                   BRK
-CBD0   3A                   ???                ;%00111010 ':'
-CBD1   00                   BRK
-CBD2   2B                   ???                ;%00101011 '+'
-CBD3   5D 7C 00             EOR $007C,X
-CBD6   00                   BRK
-CBD7   00                   BRK
-CBD8   7E 7D 00             ROR $007D,X
-CBDB   00                   BRK
-CBDC   00                   BRK
-CBDD   7F                   ???                ;%01111111
-CBDE   0F                   ???                ;%00001111
-CBDF   1F                   ???                ;%00011111
-CBE0   32                   ???                ;%00110010 '2'
-CBE1   3D 49 4A             AND $4A49,X
-CBE4   4D 4E 
-CBE6   D8                   CLD								;'OUTCH' RUTINE - CLEAR DECIMAL MODE
+
+;KEYBOARD 96 KEYS
+CB5C   00                   ;'NULL'
+CB5D   1B                   ;'ESCAPE'
+CB5E   31 					;'1'
+CB5F   32        			;'2'
+
+CB60   33                 	;'3'
+CB61   34                 	;'4'
+CB62   35 					;'5'
+CB63   36        			;'6'
+CB64   37                 	;'7'
+CB65   38        			;'8'
+CB66   39					;'9'
+CB67   30					;'0'
+CB68   2D        			;'-'
+CB69   3D					;'='
+CB7A   60					;'`'
+CB7B   08        			;'BACKSPACE'
+CB6C   0F                 	;'SHIFT IN'
+CB6D   09 					;'TAB'
+CB6E   71        			;'q'
+CB6F   77                   ;'w'
+
+CB70   65 					;'e'
+CB71   72        			;'r'
+CB72   74                   ;'t'
+CB73   79					;'y'
+CB74   75					;'u'
+CB75   69        			;'i'
+CB76   6F                   ;'o'
+CB77   70					;'p'
+CB78   5B        			;'['
+CB79   5C                 	;'\'
+CB7A   0A					;'LINE FEED'        
+CB7B   7F                 	;'DELETE'
+CB7C   20 					;'SPACE'
+CB7D   40					;'@'
+CD7E   61        			;'a'
+CB7F   73                 	;'s'
+
+CB80   64                 	;'d'
+CB81   66					;'f'
+CB82   67        			;'g'
+CB83   68        			;'h'
+CB84   6A        			;'j'
+CB85   6B                 	;'k'
+CB86   6C					;'l'
+CB87   3B					;';'
+CB88   27        			;'''
+CB89   7B                 	;'{'
+CB8A   0D					;'RETURN'
+CB8B   00					
+CB8C   00             
+CB8D   00             
+CB8E   20					;'SPACE'
+CB8F   7A					;'z'
+
+CB90   78             		;'x'
+CB91   63                   ;'c'
+CB92   76					;'v'
+CB93   62                	;'b'
+CB94   6E					;'n'
+CB95   6D 					;'m'
+CB96   2C             		;','
+CB97   2E 					;'.'
+CB98   2F 					;'/'
+CB99   A5             		;
+CB9A   A6 
+CB9b   2E                	;'.'
+CB9C   00                   
+CB9D   80               
+CB9E   81 
+CB9F   82               
+
+CBA0   83               
+CBA1   84 
+CBA2   85               
+CBA3   86
+CBA4   87               
+CBA5   A3               	;'CURSOR DOWN'
+CBA6   A2					;'CURSOR RIGHT'
+CBA7   8E                	;'ENTER - TRANSLATE TO $0D'
+CBA8   A4					;'CURSOR HOME'
+CBA9   A1                	;'CURSOR LEFT'
+CBAA   A0					;'CURSOR UP'
+CBAB   30               	;'0'
+CBAC   00                   
+CBAD   8C					;'SUBTRACT - ON SCREEN'
+CBAE   36					;'6'
+CBAF   8D             		;'ADD + ON SCREEN'
+
+CBB0   8B                   ;'DIVIDE / ON SCREEN'
+CBB1   35 					;'5'
+CBB2   8A                	;'MULTIPLY * ON SCREEN'
+CBB3   39 					;'9'
+CBB4   89 
+CBB5   31             		;'1'
+CBB6   34                   ;'4'
+CBB7   33                   ;'3'
+CBB8   37                   ;'7'
+CBB9   88                   
+CBBA   38              		;'8'
+CBBB   32                   ;'2'
+
+;MORE
+CBBC   22                   ;'"'
+CBBD   00                   
+CBBE   00                   
+CBBF   00                   
+
+CBC0   00                   
+CBC1   3C                   ;'<'
+CBC2   5F                   ;'_'
+CBC3   3E					;'>'
+CBC4   3F 					;'?'
+CBC5   29             		;')'
+CBC6   21					;'!'
+CBC7   40                	;'@'
+CBC8   23                   ;'#'
+CBC9   24					;'$'
+CBCA   25                	;'%'
+CBCB   5E					;'^'
+CBCC   26					;'&'
+CBCD   2A             		;'*'
+CBCE   28                   ;'('
+CBCF   00                   
+
+CBD0   3A                   ;':'
+CBD1   00                   
+CBD2   2B                   ;'+'
+CBD3   5D					;']'
+CBD4   7C					;'|'
+CBD5   00             
+CBD6   00             
+CBD7   00             
+CBD8   7E 
+CBD9   7D
+CBDA   00             
+CBDB   00                   
+CBDC   00                   
+CBDD   7F                   ;'DELETE'
+CBDE   0F                   ;'SHIFT OUT'
+CBDF   1F                   ;'UNIT SEPARATOR'
+
+CBE0   32                   ;'2'
+CBE1   3D					;'='
+CBE2   49					;'I'
+CBE3   4A             		;'J'
+CBE4   4D					;'M'
+CBE5   4E 					;'N'
+
+CBE6   D8         OUTCH     CLD								;'OUTCH' RUTINE - CLEAR DECIMAL MODE
 CBE7   8D C7 02             STA $02C7
 CBEA   8E C8 02             STX $02C8
 CBED   8C C9 02             STY $02C9
@@ -1035,7 +1142,7 @@ CC6A   20 DA CE             JSR LCEDA
 CC6D   4C 48 CC             JMP LCC48
 CC70   C9 A4      LCC70     CMP #$A4
 CC72   D0 D4                BNE LCC48
-CC74   20 72 CD             JSR LCD72
+CC74   20 72 CD             JSR HOMETW
 CC77   4C 48 CC             JMP LCC48
 CC7A   BD 08 CD   LCC7A     LDA $CD08,X
 CC7D   4C FC CB             JMP LCBFC
@@ -1052,7 +1159,7 @@ CC94   20 7D CD             JSR LCD7D
 CC97   4C 48 CC             JMP LCC48
 CC9A   C9 0A      LCC9A     CMP #$0A
 CC9C   D0 06                BNE LCCA4
-CC9E   20 41 CE             JSR LCE41
+CC9E   20 41 CE             JSR LINEFD
 CCA1   4C 48 CC             JMP LCC48
 CCA4   CD 2B 02   LCCA4     CMP $022B
 CCA7   D0 06                BNE LCCAF
@@ -1061,13 +1168,13 @@ CCAC   4C 48 CC             JMP LCC48
 CCAF   CD 2E 02   LCCAF     CMP $022E
 CCB2   D0 0E                BNE LCCC2
 CCB4   AD 01 02             LDA LINE 						;CURRENT LINE NUMBER OF TEXT CURSOR
-CCB7   20 F3 CD             JSR LCDF3
+CCB7   20 F3 CD             JSR CLRTLN
 CCBA   A9 01                LDA #$01
 CCBC   8D 00 02             STA COL							;CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80 "COL" "COL"
 CCBF   4C 48 CC             JMP LCC48
 CCC2   CD 2D 02   LCCC2     CMP $022D
 CCC5   D0 06                BNE LCCCD
-CCC7   20 6F CD             JSR LCD6F
+CCC7   20 6F CD             JSR CLRHTW
 CCCA   4C 48 CC             JMP LCC48
 CCCD   CD 2A 02   LCCCD     CMP $022A
 CCD0   D0 06                BNE LCCD8
@@ -1090,19 +1197,25 @@ CCF7   E8         LCCF7     INX
 CCF8   E0 20                CPX #$20
 CCFA   D0 E6                BNE LCCE2
 CCFC   4C 48 CC   LCCFC     JMP LCC48
-CCFF   00                   BRK
-CD00   8A                   TXA
-CD01   8B                   ???                ;%10001011
-CD02   8C 8D 8E             STY $8E8D
-CD05   A1 A3                LDA ($A3,X)
-CD07   B4 00                LDY $00,X
-CD09   2A                   ROL A
-CD0A   2F                   ???                ;%00101111 '/'
-CD0B   2D 2B 0D             AND $0D2B
-CD0E   08                   PHP
-CD0F   0A                   ASL A
-CD10   0C                   ???                ;%00001100
-CD11   20 36 CD             JSR LCD36						;FILE HEADER START POINT - 'INITIO' SUBRUTINE
+CCFF   .byte $00          
+CD00   .byte $8A          
+CD01   .byte $8B          
+CD02   .byte $8C 
+CD03   .byte $8D 
+CD04   .byte $8E          
+CD05   .byte $A1 
+CD06   .byte $A3          
+CD07   .byte $B4 
+CD08   .byte $00          
+CD09   .byte $2A          
+CD0A   .byte $2F          
+CD0B   .byte $2D 
+CD0C   .byte $2B 
+CD0D   .byte $0D          
+CD0E   .byte $08          
+CD0F   .byte $0A          
+CD10   .byte $0C          
+CD11   20 36 CD   INITIO    JSR INITTW						;FILE HEADER START POINT - 'INITIO' SUBRUTINE
 CD14   A9 00                LDA #$00						;LOW BYTE FOR INPUT LINE BUFFER
 CD16   85 F0                STA $F0							;SET NORMAL CODOS LINE BUFFER $F0=00 AND $F1=05 - SYSTEM INPUT LINE BUFFER (192 DECIMAL BYTES) 0500-05BF
 CD18   A9 05                LDA #$05
@@ -1118,19 +1231,19 @@ CD2B   CA                   DEX								;NEXT PLACE
 CD2C   D0 FA                BNE LCD28						;FILLING COMPLETE?
 CD2E   A9 00                LDA #$00			
 CD30   8D 0D 02             STA $020D
-CD33   4C D1 D1             JMP LD1D1
-CD36   D8         LCD36     CLD								;'INITTW' ROUTINE - CLEAR DECIMAL MODE
-CD37   20 95 CD             JSR LCD95
+CD33   4C D1 D1             JMP DRWLEG
+CD36   D8         INITTW    CLD								;'INITTW' ROUTINE - CLEAR DECIMAL MODE
+CD37   20 95 CD             JSR CLRDSP
 CD3A   A9 00                LDA #$00						;LOAD #$00
 CD3C   8D 39 02             STA $0239			
 CD3F   A2 0F                LDX #$0F						;LOAD 16 IN TO X
-CD41   9D 0F 02   LCD41     STA $KBECHO,X					;RESET $0210-$021F AREA (BIT 7 CHECKING, DISPLAY PROPERTIES ETC)
+CD41   9D 0F 02   LCD41     STA KBECHO,X					;RESET $0210-$021F AREA (BIT 7 CHECKING, DISPLAY PROPERTIES ETC)
 CD44   CA                   DEX
 CD45   10 FA                BPL LCD41						;CHECK IS IT DONE?
 CD47   A9 01                LDA #$01
 CD49   AA                   TAX
 CD4A   A8                   TAY
-CD4B   20 87 D1             JSR LD187
+CD4B   20 87 D1             JSR BEEP
 CD4E   20 1B C9             JSR LC91B
 CD51   A0 00                LDY #$00
 CD53   20 06 D1             JSR LD106
@@ -1143,10 +1256,10 @@ CD5F   8C 3D 02             STY $023D
 CD62   20 27 D1             JSR LD127
 CD65   A9 18                LDA #$18
 CD67   A0 00                LDY #$00
-CD69   8D 1E 02             STA NLINET						;'DEFTW' ROUTINE - NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
+CD69   8D 1E 02   DEFTW     STA NLINET						;'DEFTW' ROUTINE - NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CD6C   8C 1F 02             STY YTDOWN						;255-(Y COORDINATTE OF TOP OF THE TEXT WINDOW - 'YTDOWN'
-CD6F   20 AF CD   LCD6F     JSR LCDAF						;'CLRHTW' ROUTINE
-CD72   48         LCD72     PHA								;'HOMETW' ROUTINE
+CD6F   20 AF CD   CLRHTW    JSR CLRTW						;'CLRHTW' ROUTINE
+CD72   48         HOMETW    PHA								;'HOMETW' ROUTINE
 CD73   A9 01                LDA #$01
 CD75   8D 01 02             STA LINE						;SAVE CURRENT LINE NUMBER OF TEXT CURSOR - LINE
 CD78   8D 00 02             STA COL							;CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80 "COL"
@@ -1161,14 +1274,14 @@ CD88   8A                   TXA
 CD89   48                   PHA
 CD8A   98                   TYA
 CD8B   48                   PHA
-CD8C   20 41 CE             JSR LCE41
+CD8C   20 41 CE             JSR LINEFD
 CD8F   68                   PLA
 CD90   A8                   TAY
 CD91   68                   PLA
 CD92   AA                   TAX
 CD93   68         LCD93     PLA
 CD94   60                   RTS								;RETURN FROM SUBRUTINE
-CD95   48         LCD95     PHA								;'CLRDSP' ROUTINE - SAVE A ON STACK
+CD95   48         CLRDSP    PHA								;'CLRDSP' ROUTINE - SAVE A ON STACK
 CD96   8A                   TXA								;TRANSFER X TO A
 CD97   48                   PHA								;SAVE X ON STACK
 CD98   A9 00                LDA #$00						;LOAD 00 IN TO ACCUMULATOR
@@ -1184,9 +1297,9 @@ CDAB   68                   PLA
 CDAC   AA                   TAX
 CDAD   68                   PLA
 CDAE   60                   RTS								;RETURN FROM SUBRUTINE
-CDAF   48         LCDAF     PHA								;'CLRTW' ROUTINE
-CDB0   8A                   TXA
-CDB1   48                   PHA
+CDAF   48         CLRTW     PHA								;'CLRTW' ROUTINE	;PRESERVE A TO STACK
+CDB0   8A                   TXA													;TRANSFER X TO A
+CDB1   48                   PHA													;PRESERVE X TO STACK
 CDB2   AD 1F 02             LDA YTDOWN						;255-(Y COORDINATTE OF TOP OF THE TEXT WINDOW - 'YTDOWN'
 CDB5   20 63 CF             JSR LCF63
 CDB8   20 3E D1             JSR LD13E
@@ -1208,7 +1321,7 @@ CDD9   68                   PLA
 CDDA   AA                   TAX
 CDDB   68                   PLA
 CDDC   60                   RTS								;RETURN FROM SUBRUTINE
-CDDD   A9 40      LCDDD     LDA #$40						;'CLELEG' ROUTINE
+CDDD   A9 40      CLELEG    LDA #$40						;'CLELEG' ROUTINE
 CDDF   85 F4                STA $F4
 CDE1   A9 F8                LDA #$F8
 CDE3   85 F5                STA $F5
@@ -1218,7 +1331,7 @@ CDE9   A9 03                LDA #$03
 CDEB   85 F9                STA $F9
 CDED   4C 15 CE             JMP LCE15
 CDF0   AD 1E 02   LCDF0     LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
-CDF3   A2 50      LCDF3     LDX #$50						;'CLRTLN' ROUTINE
+CDF3   A2 50      CLRTLN    LDX #$50						;'CLRTLN' ROUTINE
 CDF5   CD 1E 02             CMP NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CDF8   90 03                BCC LCDFD
 CDFA   AD 1E 02             LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
@@ -1259,12 +1372,12 @@ CE3C   D0 FB                BNE LCE39
 CE3E   68         LCE3E     PLA
 CE3F   A8                   TAY
 CE40   60                   RTS								;RETURN FROM SUBRUTINE
-CE41   AD 01 02   LCE41     LDA LINE						;'LINEFD' ROUTINE - CURRENT LINE NUMBER OF TEXT CURSOR - LINE
+CE41   AD 01 02   LINEFD    LDA LINE						;'LINEFD' ROUTINE - CURRENT LINE NUMBER OF TEXT CURSOR - LINE
 CE44   CD 1E 02             CMP NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CE47   90 0D                BCC LCE56
 CE49   2C 11 02             BIT NOSCRL						;IF BIT 7=1 THEN INSTEAD OF SCROLLING THE TEXT WINDOW IS CLEARED AND THE CURSOR IS HOMED WHEN TEXT GOES BELOW BOOTOM LINE. 'NOSCRL'
 CE4C   10 0C                BPL LCE5A
-CE4E   20 AF CD             JSR LCDAF
+CE4E   20 AF CD             JSR CLRTW
 CE51   A9 00                LDA #$00
 CE53   8D 01 02             STA LINE						;SAVE CURRENT LINE NUMBER OF TEXT CURSOR - LINE
 CE56   EE 01 02   LCE56     INC LINE						;INCREMENT CURRENT LINE NUMBER OF TEXT CURSOR LINE+1
@@ -1408,10 +1521,10 @@ CF5C   90 02                BCC LCF60
 CF5E   E6 F3                INC $F3
 CF60   60         LCF60     RTS								;RETURN FROM SUBRUTINE
 CF61   49 FF                EOR #$FF
-CF63   48         LCF63     PHA
-CF64   A9 00                LDA #$00
-CF66   85 FB                STA $FB
-CF68   68                   PLA
+CF63   48         LCF63     PHA									;PRESERVE A TO STACK
+CF64   A9 00                LDA #$00							;LOAD #$00
+CF66   85 FB                STA $FB								;STORE AT $FB - RESET $FB TO #$00
+CF68   68                   PLA									;RESTORE A FROM STACK
 CF69   0A                   ASL A
 CF6A   26 FB                ROL $FB
 CF6C   0A                   ASL A
@@ -1545,31 +1658,39 @@ D073   20 49 D1             JSR LD149
 D076   CA                   DEX
 D077   10 E3                BPL LD05C
 D079   4C 27 D1             JMP LD127
-D07C   03                   ???                ;%00000011
-D07D   81 C0                STA ($C0,X)
-D07F   E0 F0                CPX #$F0
-D081   F8                   SED
-D082   FC                   ???                ;%11111100
-D083   FE FF FF             INC $FFFF,X
-D086   FF                   ???                ;%11111111
-D087   7F                   ???                ;%01111111
-D088   3F                   ???                ;%00111111 '?'
-D089   1F                   ???                ;%00011111
-D08A   0F                   ???                ;%00001111
-D08B   07                   ???                ;%00000111
-D08C   0E 1B 02   LD08C     ASL $021B						;'OFFTCR' ROUTINE
-D08F   B0 05                BCS LD096
+
+;EQUATES LOW BYTE
+D07C   03       
+D07D   81 
+D07E   C0       
+D07F   E0
+D080   F0       
+D081   F8       
+D082   FC       
+D083   FE
+;HIGH BYTE
+D084   FF 
+D085   FF       
+D086   FF       
+D087   7F       
+D088   3F       
+D089   1F       
+D08A   0F       
+D08B   07  
+     
+D08C   0E 1B 02   OFFTCR    ASL $021B						;'OFFTCR' ROUTINE
+D08F   B0 05                BCS FLPTCR
 D091   60                   RTS								;RETURN FROM SUBRUTINE
-D092   38         LD092     SEC								;'ONTCR' ROUTINE - SET CARRY FLAG
+D092   38         ONTCR     SEC								;'ONTCR' ROUTINE - SET CARRY FLAG
 D093   6E 1B 02             ROR $021B
-D096   48         LD096     PHA								;'FLPTCR' ROUTINE
+D096   48         FLPTCR    PHA								;'FLPTCR' ROUTINE - PRESERVE A,X AND Y
 D097   8A                   TXA
 D098   48                   PHA
 D099   98                   TYA
 D09A   48                   PHA
 D09B   20 3B D1             JSR LD13B
 D09E   20 A7 D0             JSR LD0A7
-D0A1   68                   PLA
+D0A1   68                   PLA								;RECOVER Y,X,A FROM STACK
 D0A2   A8                   TAY
 D0A3   68                   PLA
 D0A4   AA                   TAX
@@ -1578,7 +1699,7 @@ D0A6   60                   RTS								;RETURN FROM SUBRUTINE
 D0A7   20 3E D1   LD0A7     JSR LD13E
 D0AA   20 06 D1             JSR LD106
 D0AD   A6 FC                LDX $FC
-D0AF   BD FE D0             LDA LD0FE,X
+D0AF   BD FE D0             LDA D0FE,X
 D0B2   8D B2 02             STA $02B2
 D0B5   BD F6 D0             LDA $D0F6,X
 D0B8   8D B1 02             STA $02B1
@@ -1599,7 +1720,7 @@ D0D7   20 3E D1   LD0D7     JSR LD13E
 D0DA   20 49 D1             JSR LD149
 D0DD   20 06 D1             JSR LD106
 D0E0   A6 FC                LDX $FC
-D0E2   BD FE D0             LDA LD0FE,X
+D0E2   BD FE D0             LDA D0FE,X
 D0E5   A0 01                LDY #$01
 D0E7   51 F4                EOR ($F4),Y
 D0E9   91 F4                STA ($F4),Y
@@ -1608,17 +1729,26 @@ D0EC   BD F6 D0             LDA $D0F6,X
 D0EF   51 F4                EOR ($F4),Y
 D0F1   91 F4                STA ($F4),Y
 D0F3   4C 27 D1             JMP LD127
-D0F6   FC                   ???                ;%11111100
-D0F7   7E 3F 1F             ROR $1F3F,X
-D0FA   0F                   ???                ;%00001111
-D0FB   07                   ???                ;%00000111
-D0FC   03                   ???                ;%00000011
-D0FD   01 00                ORA ($00,X)
-D0FF   00                   BRK
-D100   00                   BRK
-D101   80                   ???                ;%10000000
-D102   C0 E0                CPY #$E0
-D104   F0 F8                BEQ LD0FE
+
+;EQUATES LOW BYTE
+D0F6   FC        
+D0F7   7E 
+D0F8   3F 
+D0F9   1F        
+D0FA   0F        
+D0FB   07        
+D0FC   03        
+D0FD   01 
+;HIGH BYTE
+D0FE   00        
+D0FF   00        
+D100   00        
+D101   80        
+D102   C0 
+D103   E0        
+D104   F0
+D105   F8        
+
 D106   20 1C D1   LD106     JSR LD11C						;TURN ON I/O AREA SUBRUTINE - DISABLES RAM AREA BE00-BFFF -2 PAGES 512 BYTES
 D109   AD E0 BF             LDA $BFE0						;SYSTEM 1 6522 SYSTEM CONTROL PORT DATA REGISTER
 D10C   09 03                ORA #$03
@@ -1678,17 +1808,17 @@ D171   8A                   TXA
 D172   48                   PHA
 D173   98                   TYA
 D174   48                   PHA
-D175   AC 24 02             LDY $CLKPER						;Click waveform period in units of 200 microseconds. 'CLKPER'
-D178   AE 26 02             LDX $CLKCY						;Click duration in units of complete waveform cycles. 'CLKCY'
-D17B   AD 25 02             LDA $CLKVOL						;Click volume, $00 = minimum, $7F = maximum. 'CLKVOL'
-D17E   20 87 D1   LD17E     JSR LD187
+D175   AC 24 02             LDY CLKPER						;Click waveform period in units of 200 microseconds. 'CLKPER'
+D178   AE 26 02             LDX CLKCY						;Click duration in units of complete waveform cycles. 'CLKCY'
+D17B   AD 25 02             LDA CLKVOL						;Click volume, $00 = minimum, $7F = maximum. 'CLKVOL'
+D17E   20 87 D1   LD17E     JSR BEEP
 D181   68                   PLA
 D182   A8                   TAY
 D183   68                   PLA
 D184   AA                   TAX
 D185   68                   PLA
 D186   60         LD186     RTS								;RETURN FROM SUBRUTINE
-D187   C9 00      LD187     CMP #$00						;'BEEP' ROUTINE
+D187   C9 00      BEEP      CMP #$00						;'BEEP' ROUTINE
 D189   10 01                BPL LD18C
 D18B   4A                   LSR A
 D18C   8D B0 02   LD18C     STA $02B0
@@ -1727,7 +1857,7 @@ D1CC   D0 F6                BNE LD1C4
 D1CE   68                   PLA
 D1CF   A8                   TAY
 D1D0   60                   RTS								;RETURN FROM SUBRUTINE
-D1D1   20 DD CD   LD1D1     JSR LCDDD						;'DRWLEG' - TO DRAW THE FUNCTION KEY LEGEND BOXES AND THEIR LABELS
+D1D1   20 DD CD   DRWLEG    JSR CLELEG						;'DRWLEG' - TO DRAW THE FUNCTION KEY LEGEND BOXES AND THEIR LABELS
 D1D4   A0 00                LDY #$00
 D1D6   A9 05                LDA #$05
 D1D8   85 FC                STA $FC
@@ -1810,9 +1940,8 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
 ;D280-D2FF -AREA RESERVED FOR PRINTER DRIVER 128BYTES. - FIRST PART OF PRINTER DRIVER. SECOND PART (INITIALIZATION ROUTINE) ON $B400
 
 ;auto-generated symbols and labels
- LC5BA      $C5BA
  LC837      $C837
- LC975      $C975
+ GETKEY      $C975
  LC640      $C640
  LC64D      $C64D
  LC76F      $C76F
@@ -1834,13 +1963,13 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LC6B1      $C6B1
  LC7CE      $C7CE
  LC6C5      $C6C5
- LCE41      $CE41
+ LINEFD      $CE41
  LC70D      $C70D
  LC6BF      $C6BF
  LC6E1      $C6E1
  LCF08      $CF08
  LC6DB      $C6DB
- LCD6F      $CD6F
+ CLRHTW      $CD6F
  LC788      $C788
  LC8F7      $C8F7
  LC7B9      $C7B9
@@ -1850,7 +1979,7 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LC73F      $C73F
  LCEDA      $CEDA
  LC739      $C739
- LCD72      $CD72
+ HOMETW      $CD72
  LC6EE      $C6EE
  LC8A1      $C8A1
  LC765      $C765
@@ -1896,7 +2025,7 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LC94E      $C94E
  LC972      $C972
  LC951      $C951
- LD092      $D092
+ ONTCR      $D092
  LD11C      $D11C
  LCAD7      $CAD7
  LCA85      $CA85
@@ -1913,14 +2042,14 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LC9FD      $C9FD
  LC9CC      $C9CC
  LC9DE      $C9DE
- LD08C      $D08C
+ OFFTCR      $D08C
  LC9CF      $C9CF
  LCABD      $CABD
  LCA09      $CA09
  LCAF6      $CAF6
  LD16B      $D16B
  LCA28      $CA28
- LCBE6      $CBE6
+ OUTCH      $CBE6
  LD12F      $D12F
  LCA5D      $CA5D
  LCA4F      $CA4F
@@ -1972,7 +2101,7 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LCCA4      $CCA4
  LCCAF      $CCAF
  LCCC2      $CCC2
- LCDF3      $CDF3
+ CLRTLN      $CDF3
  LCCCD      $CCCD
  LCCD8      $CCD8
  LCCE0      $CCE0
@@ -1980,14 +2109,14 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LCCF7      $CCF7
  LCCDD      $CCDD
  LCCE2      $CCE2
- LCD36      $CD36
+ INITTW      $CD36
  LCD20      $CD20
  LCD28      $CD28
- LD1D1      $D1D1
- LCD95      $CD95
+ DRWLEG      $D1D1
+ CLRDSP      $CD95
  LCD41      $CD41
- LD187      $D187
- LCDAF      $CDAF
+ BEEP      $D187
+ CLRTW      $CDAF
  LCD93      $CD93
  LCE15      $CE15
  LCF63      $CF63
@@ -2033,9 +2162,9 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LCF92      $CF92
  LD149      $D149
  LD05C      $D05C
- LD096      $D096
+ FLPTCR      $D096
  LD0BD      $D0BD
- LD0FE      $D0FE
+ D0FE      $D0FE
  LD139      $D139
  LCF17      $CF17
  LD154      $D154
@@ -2046,7 +2175,7 @@ D272   60                   RTS								;RETURN FROM SUBRUTINE
  LD199      $D199
  LD1C7      $D1C7
  LD1C4      $D1C4
- LCDDD      $CDDD
+ CLELEG      $CDDD
  LD1F5      $D1F5
  LD1F7      $D1F7
  LD209      $D209
