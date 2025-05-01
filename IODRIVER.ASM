@@ -1641,12 +1641,12 @@ D02F   85 F7                STA $F7
 D031   AD 37 02             LDA EXFTBK						;MEMORY BANK NUMBER CONTAINING EXTERNAL FONT TABLE - DEFAULT 0. 'EXFTBK'
 D034   4C 43 D0             JMP LD043
 D037   69 50      LD037     ADC #$50
-D039   85 F6                STA $F6
+D039   85 F6                STA $F6							;FONT TABLE POINTER			-FOR KIM $00
 D03B   A9 FD                LDA #$FD
 D03D   65 FB                ADC $FB
-D03F   85 F7                STA $F7
+D03F   85 F7                STA $F7							;FONT TABLE PAGE			-FOR KIM $20
 D041   A9 01                LDA #$01
-D043   8D D0 02   LD043     STA $02D0
+D043   8D D0 02   LD043     STA $02D0						;FONT TABLE BANK			-FOR KIM $00
 D046   20 92 CF             JSR LCF92
 D049   20 06 D1             JSR LD106
 D04C   A6 FC                LDX $FC
@@ -1796,7 +1796,7 @@ D147   68                   PLA
 D148   60                   RTS								;RETURN FROM SUBRUTINE
 D149   A5 F4      LD149     LDA $F4
 D14B   38                   SEC								;SET CARRY FLAG
-D14C   E9 3C                SBC #$3C
+D14C   E9 3C                SBC #$3C				;LINE END FOR CHARACTERS - #$3C - 480PIX, FOR K-1008 - #$28 - 320 PIX
 D14E   85 F4                STA $F4
 D150   B0 02                BCS LD154
 D152   C6 F5                DEC $F5
