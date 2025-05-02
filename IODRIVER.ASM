@@ -1332,9 +1332,9 @@ CDD9   68                   PLA
 CDDA   AA                   TAX
 CDDB   68                   PLA
 CDDC   60                   RTS								;RETURN FROM SUBRUTINE
-CDDD   A9 40      CLRLEG    LDA #$40						;'CLRLEG' ROUTINE
+CDDD   A9 40      CLRLEG    LDA #$40						;'CLRLEG' ROUTINE - PIXEL COUNT FOR LAST 7 LINES OF SCREEN
 CDDF   85 F4                STA $F4
-CDE1   A9 F8                LDA #$F8
+CDE1   A9 F8                LDA #$F8						;PIXEL COUNT FOR LAST 7 LINES OF SCREEN WITH LEGEND BOXES
 CDE3   85 F5                STA $F5
 CDE5   A9 C0                LDA #$C0					;VISABLE MEMORY PAGE - FOR KIM-1 ~$2000?
 CDE7   85 F8                STA $F8
@@ -1564,7 +1564,7 @@ CF91   60                   RTS								;RETURN FROM SUBRUTINE
 CF92   20 FD CF   LCF92     JSR LCFFD
 CF95   20 1C D1             JSR LD11C
 CF98   AD E0 BF             LDA $BFE0						;SYSTEM 1 6522 SYSTEM CONTROL PORT DATA REGISTER
-CF9B   4D D0 02             EOR $02D0
+CF9B   4D D0 02             EOR $02D0						;BANK SWITCH FROM FONT TABLE
 CF9E   8D E0 BF             STA $BFE0						;SYSTEM 1 6522 SYSTEM CONTROL PORT DATA REGISTER
 CFA1   A0 06                LDY #$06
 CFA3   A2 00                LDX #$00
