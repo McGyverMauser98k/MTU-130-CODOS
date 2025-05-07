@@ -56,7 +56,7 @@ INITIO		= $030F			; TO CLEAR THE SCREEN AND SET DEFAULT VALUES OF DISPLAY PARAME
 020A  .byte  $80                  				;'GMODE' - GRAPHIC DRAWING MODE, $00=MOVE, $40=ERASE, $80=DRAW, $C0=FLIP. ADD $20 FOR DASHED LINES.
 020B  .byte  $F0	                			;'DSHPAT' ;RECIRCULATING DASHED LINE PATTERN, EACH 1 BIT=DOT ON, 2 BYTES.
 020C  .byte  $F0
-020D  .byte  $00                   
+020D  .byte  $00                   				;KEY READ TABLE OFFSET - TO DETERMINE WHICH KEY WAS PRESSED
 020E  .byte  $00                   
 020F  .byte  $00                				;'KBECHO' - IF BIT 7=1 THEN "ECHO" EACH KEY TO THE DISPLAY.   
 0210  .byte  $00                   				;'NOLFCR' - IF BIT 7=1 THEN NO AUTOMATIC LINE FEED AFTER CR.
@@ -337,10 +337,10 @@ C624   8E D6 02             STX $02D6
 C627   20 37 C8   LC627     JSR LC837
 C62A   A9 00      LC62A     LDA #$00
 C62C   8D D7 02             STA $02D7
-C62F   20 75 C9   LC62F     JSR GETKEY
-C632   C9 7F                CMP #$7F
+C62F   20 75 C9   LC62F     JSR GETKEY					;GET KEYBOARD KEY CHARACTER
+C632   C9 7F                CMP #$7F					;CHECK IF IT'S ASCII CHARACTER 00-7F
 C634   B0 0A                BCS LC640
-C636   C9 20                CMP #$20
+C636   C9 20                CMP #$20					;CHECK IF IT'S CONTROL CHARACTER OR SPACE?
 C638   90 13                BCC LC64D
 C63A   20 6F C7   LC63A     JSR LC76F
 C63D   4C 2F C6             JMP LC62F
@@ -351,12 +351,12 @@ C646   20 B3 C8             JSR LC8B3
 C649   C9 0D                CMP #$0D
 C64B   D0 E2                BNE LC62F
 C64D   A2 1E      LC64D     LDX #$1E
-C64F   DD BC C5   LC64F     CMP $C5BC,X
+C64F   DD BC C5   LC64F     CMP $C5BC,X					;CONTROL KEYS ARRARY
 C652   F0 15                BEQ LC669
 C654   CA                   DEX
 C655   10 F8                BPL LC64F
 C657   A2 0A                LDX #$0A
-C659   DD B0 C5   LC659     CMP $C5B0,X
+C659   DD B0 C5   LC659     CMP $C5B0,X					;ARITHMETIC KEYS
 C65C   F0 1D                BEQ LC67B
 C65E   CA                   DEX
 C65F   CA                   DEX
@@ -373,7 +373,7 @@ C672   BD DC C5             LDA $C5DC,X
 C675   8D DD 02             STA $02DD
 C678   6C DC 02             JMP ($02DC)
 C67B   E8         LC67B     INX
-C67C   BD B0 C5             LDA $C5B0,X
+C67C   BD B0 C5             LDA $C5B0,X					;ARITHMETIC KEYS
 C67F   4C 3A C6             JMP LC63A
 C682   20 17 C8             JSR LC817
 C685   20 26 C9             JSR LC926
@@ -444,7 +444,7 @@ C719   4C 2A C6             JMP LC62A
 C71C   C0 00                CPY #$00
 C71E   D0 ED                BNE LC70D
 C720   F0 D5                BEQ LC6F7
-C722   20 75 C9             JSR GETKEY
+C722   20 75 C9             JSR GETKEY						;GET KEYBOARD KEY CHARACTER
 C725   4C 3A C6             JMP LC63A
 C728   20 93 C7             JSR LC793
 C72B   4C 2F C6             JMP LC62F
@@ -715,26 +715,26 @@ C96C   AC DB 02             LDY $02DB
 C96F   4C 51 C9             JMP LC951
 C972   84 FD      LC972     STY $FD
 C974   60                   RTS								;RETURN FROM SUBRUTINE
-C975   8E CD 02   GETKEY    STX $02CD						;GETKEY RUTINE
-C978   8C CE 02             STY $02CE
-C97B   20 92 D0             JSR ONTCR
-C97E   20 1C D1             JSR LD11C
-C981   20 D7 CA             JSR LCAD7
-C984   A9 40                LDA #$40
-C986   8D EE BF             STA $BFEE						;SYSTEM 1 6522 INTERRUPT ENABLE REGISTER
+C975   8E CD 02   GETKEY    STX $02CD						;GETKEY RUTINE - TO GET KEY FROM KEYBOARD - PRESERVE X REGISTER IN TEMP  (A-CHARACTER CODE OF KEY STRUCK, X AND Y PRESERVED)
+C978   8C CE 02             STY $02CE						;PRESERVE Y REGISTER
+C97B   20 92 D0             JSR ONTCR						;TURN TEXT CURSOR ON
+C97E   20 1C D1             JSR LD11C						;TURN ON I/O MEMORY AREA
+C981   20 D7 CA             JSR LCAD7						;READ $BFEC INPUT PORT
+C984   A9 40                LDA #$40						;LOAD 64 IN TO ACCUMULATOR
+C986   8D EE BF             STA $BFEE						;SYSTEM 1 6522 INTERRUPT ENABLE REGISTER - TURN OFF INTERRUPTS
 C989   AD EB BF             LDA $BFEB						;SYSTEM 1 6522 AUXILIARY CONTROL REGISTER
 C98C   29 3F                AND #$3F
 C98E   8D EB BF             STA $BFEB						;SYSTEM 1 6522 AUXILIARY CONTROL REGISTER
 C991   A0 00                LDY #$00
 C993   AE 20 02   LC993     LDX $DBCDLA						;WAIT TIME IN MILLISECONDS ALLOWED FOR CONTACT BOUNCE. 'DBCDLA'
-C996   20 85 CA   LC996     JSR LCA85
+C996   20 85 CA   LC996     JSR LCA85						;SCAN KEYBOARD AND RESETS COLUMN COUNTER
 C999   D0 2B                BNE LC9C6
 C99B   A9 00                LDA #$00
-C99D   20 8B CA             JSR LCA8B
+C99D   20 8B CA             JSR LCA8B						;RESETS KEYBOARD SCAN COUNTER
 C9A0   F0 1B                BEQ LC9BD
 C9A2   A2 07                LDX #$07
-C9A4   AD 0D 02             LDA $020D						;
-C9A7   DD DE CB   LC9A7     CMP $CBDE,X
+C9A4   AD 0D 02             LDA $020D					; INITIALLY 00
+C9A7   DD DE CB   LC9A7     CMP $CBDE,X					;COMPARE WITH 
 C9AA   F0 05                BEQ LC9B1
 C9AC   CA                   DEX
 C9AD   10 F8                BPL LC9A7
@@ -752,14 +752,14 @@ C9C4   D0 4B                BNE LCA11
 C9C6   CA         LC9C6     DEX
 C9C7   D0 CD                BNE LC996
 C9C9   8E 0E 02             STX $020E
-C9CC   20 92 D0   LC9CC     JSR ONTCR
+C9CC   20 92 D0   LC9CC     JSR ONTCR						;TURN TEXT CURSOR ON
 C9CF   A9 00      LC9CF     LDA #$00
 C9D1   8D CA 02             STA $02CA
 C9D4   AD 22 02             LDA CURDLA						;DETERMINES CURSOR BLINK SPEED, 0-NO BLINK 'CURDLA'
 C9D7   4A                   LSR A
 C9D8   6E CA 02             ROR $02CA
 C9DB   8D CB 02             STA $02CB
-C9DE   20 E0 CA   LC9DE     JSR LCAE0
+C9DE   20 E0 CA   LC9DE     JSR LCAE0						;RESET KEYBOARD SCAN COUNTER
 C9E1   D0 20                BNE LCA03
 C9E3   AD CA 02             LDA $02CA
 C9E6   D0 15                BNE LC9FD
@@ -769,11 +769,11 @@ C9ED   2C 1B 02             BIT $021B
 C9F0   10 DA                BPL LC9CC
 C9F2   AD 22 02             LDA CURDLA						;DETERMINES CURSOR BLINK SPEED, 0-NO BLINK 'CURDLA'
 C9F5   F0 E7                BEQ LC9DE
-C9F7   20 8C D0             JSR OFFTCR
+C9F7   20 8C D0             JSR OFFTCR						;TURN OFF TEXT CURSOR
 C9FA   4C CF C9             JMP LC9CF
 C9FD   CE CA 02   LC9FD     DEC $02CA
 CA00   4C DE C9             JMP LC9DE
-CA03   20 8C D0   LCA03     JSR OFFTCR
+CA03   20 8C D0   LCA03     JSR OFFTCR						;TURN OFF TEXT CURSOR
 CA06   20 BD CA             JSR LCABD
 CA09   20 85 CA   LCA09     JSR LCA85
 CA0C   D0 D0                BNE LC9DE
@@ -781,22 +781,22 @@ CA0E   CA                   DEX
 CA0F   D0 F8                BNE LCA09
 CA11   AD 21 02   LCA11     LDA RPTRAT						;INTERCHARACTER REPEAT DELAY IN 256uS UNITS. 'RPTRAT'
 CA14   8D E5 BF             STA $BFE5						;SYSTEM 1 6522 TIMER 1
-CA17   20 8C D0             JSR OFFTCR
-CA1A   20 F6 CA             JSR LCAF6
-CA1D   20 6B D1             JSR LD16B
+CA17   20 8C D0             JSR OFFTCR						;TURN OFF TEXT CURSOR
+CA1A   20 F6 CA             JSR LCAF6						;DISPLAY CHARACTER ON SCREEN??
+CA1D   20 6B D1             JSR LD16B						;KEYBOARD CLICK SOUND
 CA20   2C 0F 02             BIT KBECHO						;IF BIT 7=1 THAN "ECHO" EACH KEY TO THE DISPLAY. 
 CA23   10 03                BPL LCA28
-CA25   20 E6 CB             JSR OUTCH
-CA28   AE CD 02   LCA28     LDX $02CD
-CA2B   AC CE 02             LDY $02CE
-CA2E   4C 2F D1             JMP LD12F
+CA25   20 E6 CB             JSR OUTCH						;TO DISPLAY CHARACTER FROM A TO SCREEN!!
+CA28   AE CD 02   LCA28     LDX $02CD						;RECOVER INDEX X
+CA2B   AC CE 02             LDY $02CE						;RECOVER INDEX Y
+CA2E   4C 2F D1             JMP LD12F						;TURN OFF I/O AREA AND RTS
 CA31   A9 00      IFKEY     LDA #$00						;'IFKEY' ROUTINE - TO TEST IF A KEY IS PRESSED WITHOUT MULTIPLE RECOGNITION LOCKOUT
 CA33   8D 0D 02             STA $020D
 CA36   8E CD 02   TSTKEY    STX $02CD						;'TSTKEY' ROUTINE - TO TEST IF A KEY IS PRESSED; HAS MULTIPLE RECOGNITION LOCKOUT
 CA39   8C CE 02             STY $02CE
-CA3C   20 1C D1             JSR LD11C
-CA3F   20 D7 CA             JSR LCAD7
-CA42   AD 0D 02             LDA $020D
+CA3C   20 1C D1             JSR LD11C						;TURN ON I/O AREA
+CA3F   20 D7 CA             JSR LCAD7						;SET OUTPUT DATA REGISTER
+CA42   AD 0D 02             LDA $020D						;RECOVER INDEX A
 CA45   F0 16                BEQ LCA5D
 CA47   20 8B CA             JSR LCA8B
 CA4A   D0 03                BNE LCA4F
@@ -815,19 +815,19 @@ CA65   20 85 CA   LCA65     JSR LCA85
 CA68   D0 0C                BNE LCA76
 CA6A   CA                   DEX
 CA6B   D0 F8                BNE LCA65
-CA6D   20 F6 CA             JSR LCAF6
-CA70   20 6B D1             JSR LD16B
+CA6D   20 F6 CA             JSR LCAF6						;DISPLAY CHARACTER ON SCREEN??
+CA70   20 6B D1             JSR LD16B						;KEYBOARD CLICK SOUND
 CA73   38                   SEC								;SET CARRY FLAG
 CA74   B0 06                BCS LCA7C
 CA76   A9 00      LCA76     LDA #$00
 CA78   8D 0D 02             STA $020D
 CA7B   18         LCA7B     CLC
-CA7C   AE CD 02   LCA7C     LDX $02CD
-CA7F   AC CE 02             LDY $02CE
-CA82   4C 2F D1             JMP LD12F
+CA7C   AE CD 02   LCA7C     LDX $02CD						;RECOVER INDEX X
+CA7F   AC CE 02             LDY $02CE						;RECOVER INDEX Y
+CA82   4C 2F D1             JMP LD12F						;TURN OFF I/O AREA AND RTS
 CA85   20 B6 CA   LCA85     JSR LCAB6
 CA88   AD 0D 02             LDA $020D
-CA8B   20 1C D1   LCA8B     JSR LD11C
+CA8B   20 1C D1   LCA8B     JSR LD11C						;TURN ON I/O AREA
 CA8E   8D C5 BF             STA $BFC5						;RESET KEYBOARD SCAN COUNTER
 CA91   86 FA                STX $FA
 CA93   2C 6C CB   LCA93     BIT $CB6C
@@ -844,7 +844,7 @@ CAA4   AA                   TAX
 CAA5   BD B0 CA             LDA $CAB0,X
 CAA8   A6 FA                LDX $FA
 CAAA   2D E1 BF             AND $BFE1						;SYSTEM 1 6522 KEYBOARD PORT DATA REGISTER
-CAAD   4C 2F D1             JMP LD12F
+CAAD   4C 2F D1             JMP LD12F						;TURN OFF I/O AREA AND RTS
 CAB0   .byte $04                   							;%00000100 - keyboard ROW
 CAB1   .byte $08       		    							;%00001000
 CAB2   .byte $10											;%00010000
@@ -855,7 +855,7 @@ CAB6   A9 C5      LCAB6     LDA #$C5
 CAB8   E9 01      LCAB8     SBC #$01
 CABA   D0 FC                BNE LCAB8
 CABC   60                   RTS								;RETURN FROM SUBRUTINE
-CABD   A2 05      LCABD     LDX #$05
+CABD   A2 05      LCABD     LDX #$05						;GENERATES OFFSET OF KEY PRESSED TO BE IDENTIFIED - STORED IN $020D
 CABF   0A         LCABF     ASL A
 CAC0   B0 03                BCS LCAC5
 CAC2   CA                   DEX
@@ -868,11 +868,11 @@ CAC9   0A                   ASL A
 CACA   84 FA                STY $FA
 CACC   05 FA                ORA $FA
 CACE   49 0F                EOR #$0F
-CAD0   8D 0D 02             STA $020D
+CAD0   8D 0D 02             STA $020D						;OFFSET GENERATED
 CAD3   AE 20 02             LDX DBCDLA						;WAIT TIME IN MILLISECONDS ALLOWED FOR CONTACT BOUNCE. 'DBCDLA'
 CAD6   60                   RTS								;RETURN FROM SUBRUTINE
 CAD7   AD EC BF   LCAD7     LDA $BFEC						;SYSTEM 1 6522 PERIPHERIAL CONTROL REGISTER
-CADA   09 0B                ORA #$0B
+CADA   09 0B                ORA #$0B						;SET INPUT POSITIVE ACTIVE EDGE
 CADC   8D EC BF             STA $BFEC						;SYSTEM 1 6522 PERIPHERIAL CONTROL REGISTER
 CADF   60                   RTS								;RETURN FROM SUBRUTINE
 CAE0   8D C5 BF   LCAE0     STA $BFC5						;RESET KEYBOARD SCAN COUNTER
@@ -886,9 +886,9 @@ CAF1   88                   DEY
 CAF2   10 F4                BPL LCAE8
 CAF4   C8                   INY
 CAF5   60         LCAF5     RTS								;RETURN FROM SUBRUTINE
-CAF6   AE 0D 02   LCAF6     LDX $020D
-CAF9   BD 5C CB             LDA $CB5C,X
-CAFC   85 FA                STA $FA
+CAF6   AE 0D 02   LCAF6     LDX $020D						;OFFSET TO READ PROPER KEY PRESSED
+CAF9   BD 5C CB             LDA $CB5C,X						;LOAD PROPER KEY CODE WHICH WAS PRESSED
+CAFC   85 FA                STA $FA							;SAVE CHARACTER CODE TEMPORARLY
 CAFE   8D C5 BF             STA $BFC5						;RESET KEYBOARD SCAN COUNTER
 CB01   AD E1 BF             LDA $BFE1						;SYSTEM 1 6522 KEYBOARD PORT DATA REGISTER
 CB04   2C 7C CB             BIT $CB7C
@@ -897,18 +897,18 @@ CB09   2C 7D CB             BIT $CB7D
 CB0C   F0 17                BEQ LCB25
 CB0E   29 10                AND #$10
 CB10   F0 04                BEQ LCB16
-CB12   A5 FA                LDA $FA
+CB12   A5 FA                LDA $FA							;CHECK IT'S NOT ZERO
 CB14   D0 35                BNE LCB4B
-CB16   A5 FA      LCB16     LDA $FA
+CB16   A5 FA      LCB16     LDA $FA							;CHECK IF IT'S LOWER CASE CHARACTER OR UPPER CASE
 CB18   C9 61                CMP #$61						;LOWER CASE A
 CB1A   90 2F                BCC LCB4B
-CB1C   C9 7B                CMP #$7B						;L.C.Z+1
+CB1C   C9 7B                CMP #$7B						;L.C.Z+1 - UPPER CASE
 CB1E   B0 2B                BCS LCB4B
 CB20   38         LCB20     SEC								;SET CARRY FLAG
 CB21   E9 20                SBC #$20						;FOLD LOWER TO UPPER CASE ALPFA
 CB23   D0 26                BNE LCB4B
 CB25   E0 3D      LCB25     CPX #$3D
-CB27   A5 FA                LDA $FA
+CB27   A5 FA                LDA $FA							;CHECK IF IT'S 
 CB29   90 04                BCC LCB2F
 CB2B   09 10                ORA #$10
 CB2D   B0 1C                BCS LCB4B
@@ -1562,7 +1562,7 @@ CF8D   69 C0                ADC #$C0					;MEMORY PAGE? - FOR KIM-1 ~$2000
 CF8F   85 F3                STA $F3
 CF91   60                   RTS								;RETURN FROM SUBRUTINE
 CF92   20 FD CF   LCF92     JSR LCFFD
-CF95   20 1C D1             JSR LD11C
+CF95   20 1C D1             JSR LD11C						;TURN ON I/O AREA
 CF98   AD E0 BF             LDA $BFE0						;SYSTEM 1 6522 SYSTEM CONTROL PORT DATA REGISTER
 CF9B   4D D0 02             EOR $02D0						;BANK SWITCH FROM FONT TABLE
 CF9E   8D E0 BF             STA $BFE0						;SYSTEM 1 6522 SYSTEM CONTROL PORT DATA REGISTER
@@ -1689,10 +1689,10 @@ D089   1F
 D08A   0F       
 D08B   07  
      
-D08C   0E 1B 02   OFFTCR    ASL $021B						;'OFFTCR' ROUTINE
+D08C   0E 1B 02   OFFTCR    ASL $021B						;'OFFTCR' ROUTINE - TO TURN THE TEXT CURSOR OFF IF IT'S ON
 D08F   B0 05                BCS FLPTCR
 D091   60                   RTS								;RETURN FROM SUBRUTINE
-D092   38         ONTCR     SEC								;'ONTCR' ROUTINE - SET CARRY FLAG
+D092   38         ONTCR     SEC								;'ONTCR' ROUTINE - SET CARRY FLAG - TO TURN THE TEXT CURSOR ON
 D093   6E 1B 02             ROR $021B
 D096   48         FLPTCR    PHA								;'FLPTCR' ROUTINE - SAVE REGISTERS
 D097   8A                   TXA
@@ -1835,7 +1835,7 @@ D18B   4A                   LSR A
 D18C   8D B0 02   LD18C     STA $02B0
 D18F   8A                   TXA
 D190   48                   PHA
-D191   20 1C D1             JSR LD11C
+D191   20 1C D1             JSR LD11C						;TURN ON I/O AREA
 D194   A9 FF                LDA #$FF
 D196   8D F3 BF             STA $BFF3						;SYSTEM 2 6522 AUDIO DAC PORT DIRECTION REGISTER
 D199   AD B0 02   LD199     LDA $02B0
