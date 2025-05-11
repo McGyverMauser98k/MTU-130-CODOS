@@ -348,7 +348,7 @@ C640   F0 0B      LC640     BEQ LC64D
 C642   C9 88                CMP #$88
 C644   B0 07                BCS LC64D
 C646   20 B3 C8             JSR LC8B3
-C649   C9 0D                CMP #$0D
+C649   C9 0D                CMP #$0D						;CHECK IF IT'S CARRIAGE RETURN
 C64B   D0 E2                BNE LC62F
 C64D   A2 1E      LC64D     LDX #$1E
 C64F   DD BC C5   LC64F     CMP $C5BC,X						;CONTROL KEYS ARRARY
@@ -658,7 +658,7 @@ C8E9   E8                   INX
 C8EA   D0 F2                BNE LC8DE
 C8EC   BD 00 04   LC8EC     LDA $0400,X						;FUNCTION KEY SUBSTITUTION STRING TABLE. 8 GRUPS OF 32 CHARACTERS. 'KEYSTR'
 C8EF   29 7F                AND #$7F						;INSURE 7 BIT ASCII INPUT
-C8F1   C9 0D                CMP #$0D
+C8F1   C9 0D                CMP #$0D						;IS IT CARRIAGE RETURN?
 C8F3   0E 39 02             ASL $0239
 C8F6   60                   RTS								;RETURN FROM SUBRUTINE
 C8F7   20 1B C9   LC8F7     JSR LC91B
@@ -669,10 +669,10 @@ C8FF   AA                   TAX
 C900   8C D4 02             STY $02D4
 C903   AC 3D 02             LDY $023D
 C906   C8                   INY
-C907   20 06 D1             JSR LD106
+C907   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 C90A   8A                   TXA
 C90B   91 F2                STA ($F2),Y
-C90D   20 27 D1             JSR LD127
+C90D   20 27 D1             JSR LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0
 C910   8C 3D 02             STY $023D
 C913   AC D4 02             LDY $02D4
 C916   C4 FD                CPY $FD
@@ -690,7 +690,7 @@ C92C   AC DA 02             LDY $02DA
 C92F   88         LC92F     DEY
 C930   CC 3D 02             CPY $023D
 C933   F0 FA                BEQ LC92F
-C935   20 06 D1             JSR LD106
+C935   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 C938   B1 F2                LDA ($F2),Y
 C93A   C9 FF                CMP #$FF
 C93C   D0 09                BNE LC947
@@ -702,10 +702,10 @@ C949   D0 E4                BNE LC92F
 C94B   8C DA 02             STY $02DA
 C94E   8C DB 02   LC94E     STY $02DB
 C951   C8         LC951     INY
-C952   20 06 D1             JSR LD106
+C952   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 C955   B1 F2                LDA ($F2),Y
 C957   AA                   TAX
-C958   20 27 D1             JSR LD127
+C958   20 27 D1             JSR LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0
 C95B   8C DB 02             STY $02DB
 C95E   AC D4 02             LDY $02D4
 C961   8A                   TXA
@@ -1174,13 +1174,13 @@ CC81   69 20                ADC #$20
 CC83   2C 18 02             BIT EXCCP						;IF BIT 7=1 THEN CALL USER CONTROL CHARACTER PROCESSOR. 'EXCCP'
 CC86   10 03                BPL LCC8B
 CC88   6C 2F 02             JMP (QEXCC)						;ADRES OF EXTERNAL CHARACTER PROCESSOR IF USED LOW BYTE. 'QEXCC'
-CC8B   C9 0D      LCC8B     CMP #$0D
+CC8B   C9 0D      LCC8B     CMP #$0D						;TEST IF CARRIAGE RETURN
 CC8D   D0 0B                BNE LCC9A
 CC8F   0E 1D 02             ASL $021D
 CC92   B0 B4                BCS LCC48
 CC94   20 7D CD             JSR LCD7D
 CC97   4C 48 CC             JMP LCC48
-CC9A   C9 0A      LCC9A     CMP #$0A
+CC9A   C9 0A      LCC9A     CMP #$0A						;TESI IF LINE FEED
 CC9C   D0 06                BNE LCCA4
 CC9E   20 41 CE             JSR LINEFD
 CCA1   4C 48 CC             JMP LCC48
@@ -1269,14 +1269,14 @@ CD4A   A8                   TAY
 CD4B   20 87 D1             JSR BEEP
 CD4E   20 1B C9             JSR LC91B
 CD51   A0 00                LDY #$00
-CD53   20 06 D1             JSR LD106
+CD53   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 CD56   A9 FF                LDA #$FF
 CD58   91 F2                STA ($F2),Y
 CD5A   C8                   INY
 CD5B   A9 0D                LDA #$0D
 CD5D   91 F2                STA ($F2),Y
 CD5F   8C 3D 02             STY $023D
-CD62   20 27 D1             JSR LD127
+CD62   20 27 D1             JSR LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0
 CD65   A9 18                LDA #$18
 CD67   A0 00                LDY #$00
 CD69   8D 1E 02   DEFTW     STA NLINET						;'DEFTW' ROUTINE - NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
@@ -1298,12 +1298,15 @@ CD89   48                   PHA
 CD8A   98                   TYA
 CD8B   48                   PHA
 CD8C   20 41 CE             JSR LINEFD
-CD8F   68                   PLA
+CD8F   68                   PLA								;RESTORE INDEX Y
 CD90   A8                   TAY
-CD91   68                   PLA
+CD91   68                   PLA								;RESTORE INDEX X
 CD92   AA                   TAX
-CD93   68         LCD93     PLA
+CD93   68         LCD93     PLA								;RESTORE ACCUMULATOR
 CD94   60                   RTS								;RETURN FROM SUBRUTINE
+
+;TO CLEAR WHOLE DISPLAY INCLUDING LEGEND BOXES AREA
+
 CD95   48         CLRDSP    PHA								;'CLRDSP' ROUTINE - SAVE A ON STACK
 CD96   8A                   TXA								;TRANSFER X TO A
 CD97   48                   PHA								;SAVE X ON STACK
@@ -1314,12 +1317,15 @@ CD9E   85 F5                STA $F5							;STORE IN $F5 - HIGH VISABLE MEMORY BY
 CDA0   A9 00                LDA #$00						;LOAD 00 IN TO ACCUMULATOR
 CDA2   85 F8                STA $F8							;STORE IN $F8 - LOW BYTE PIXEL COUNT
 CDA4   A9 3C                LDA #$3C						;LOAD 3C IN TO ACCUMULATOR
-CDA6   85 F9                STA $F9							;STORE IN $F9 - HIGH BYTE PIXEL COUNT	- 3C00=15360 display points on screen
-CDA8   20 15 CE             JSR LCE15
-CDAB   68                   PLA
+CDA6   85 F9                STA $F9							;STORE IN $F9 - HIGH BYTE PIXEL COUNT	- 3C00=15360 DISPLAYED BYTES ON SCREEN (8000=1F40 FOR KIM-1 K-1008)
+CDA8   20 15 CE             JSR LCE15						;TURN ON DISPLAY BANK 1, CLEAR SCREEN AREA, TURN ON MEMORY BANK 0, GO BACK.
+CDAB   68                   PLA								;RESTORE INDEX X
 CDAC   AA                   TAX
-CDAD   68                   PLA
+CDAD   68                   PLA								;RESTORE ACCUMULATOR
 CDAE   60                   RTS								;RETURN FROM SUBRUTINE
+
+;TO CLEAR ONLY DESIRED TEXT WINDOW ARREA - 480X(256-16 LEGEND BOXES HEIGHT) - 14400 BYTES TO CLEAR
+
 CDAF   48         CLRTW     PHA								;'CLRTW' ROUTINE	;PRESERVE A TO STACK
 CDB0   8A                   TXA													;TRANSFER X TO A
 CDB1   48                   PHA													;PRESERVE X TO STACK
@@ -1327,7 +1333,7 @@ CDB2   AD 1F 02             LDA YTDOWN						;255-(Y COORDINATTE OF TOP OF THE TE
 CDB5   20 63 CF             JSR LCF63
 CDB8   20 3E D1             JSR LD13E
 CDBB   AD 1E 02             LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
-CDBE   A2 50                LDX #$50
+CDBE   A2 50                LDX #$50						;80 CHARACTERS PER LINE
 CDC0   20 36 CF             JSR LCF36
 CDC3   A5 F2                LDA $F2
 CDC5   38                   SEC								;SET CARRY FLAG
@@ -1335,26 +1341,29 @@ CDC6   E5 F4                SBC $F4
 CDC8   85 F8                STA $F8
 CDCA   A5 F3                LDA $F3
 CDCC   E5 F5                SBC $F5
-CDCE   85 F9                STA $F9
-CDD0   E6 F8                INC $F8
+CDCE   85 F9                STA $F9							;BYTES TO CLEAR HIGH BYTE - 1BYTE=8PIXELS
+CDD0   E6 F8                INC $F8							;BYTES TO CLEAR LOW BYTE
 CDD2   D0 02                BNE LCDD6
 CDD4   E6 F9                INC $F9
-CDD6   20 15 CE   LCDD6     JSR LCE15
+CDD6   20 15 CE   LCDD6     JSR LCE15						;TURN ON DISPLAY BANK 1, CLEAR DESIRED SCREEN AREA, TURN ON MEMORY BANK 0, GO BACK.
 CDD9   68                   PLA
 CDDA   AA                   TAX
 CDDB   68                   PLA
 CDDC   60                   RTS								;RETURN FROM SUBRUTINE
-CDDD   A9 40      CLRLEG    LDA #$40						;'CLRLEG' ROUTINE - PIXEL COUNT FOR LAST 7 LINES OF SCREEN
+
+;TO CLEAR ONLY LEGEND BOXES AREA $F840 - 960BYTES TO CLEAR -16 LINES
+
+CDDD   A9 40      CLRLEG    LDA #$40						;START POSITION OF LEGEND AREA TO CLEAR LOW BYTE
 CDDF   85 F4                STA $F4
-CDE1   A9 F8                LDA #$F8						;PIXEL COUNT FOR LAST 7 LINES OF SCREEN WITH LEGEND BOXES
+CDE1   A9 F8                LDA #$F8						;START POSITION OF LEGEND AREA TO CLEAR HIGH BYTE
 CDE3   85 F5                STA $F5
-CDE5   A9 C0                LDA #$C0					;VISABLE MEMORY PAGE - FOR KIM-1 ~$2000?
+CDE5   A9 C0                LDA #$C0						;BYTES FOR LEGEND AREA - LOW BYTE
 CDE7   85 F8                STA $F8
-CDE9   A9 03                LDA #$03
+CDE9   A9 03                LDA #$03						;BYTES FOR LEGEND AREA - HIGH BYTE = 960 TOTAL
 CDEB   85 F9                STA $F9
-CDED   4C 15 CE             JMP LCE15
+CDED   4C 15 CE             JMP LCE15						;TURN ON DISPLAY BANK 1, CLEAR DESIRED SCREEN AREA, TURN ON MEMORY BANK 0, GO BACK.
 CDF0   AD 1E 02   LCDF0     LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
-CDF3   A2 50      CLRTLN    LDX #$50						;'CLRTLN' ROUTINE
+CDF3   A2 50      CLRTLN    LDX #$50						;'CLRTLN' ROUTINE TO CLEAD SPECIFIED TEXT LINE - 80 CHARACTERS PER LINE
 CDF5   CD 1E 02             CMP NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CDF8   90 03                BCC LCDFD
 CDFA   AD 1E 02             LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
@@ -1362,39 +1371,45 @@ CDFD   20 36 CF   LCDFD     JSR LCF36
 CE00   A5 F2                LDA $F2
 CE02   38                   SEC								;SET CARRY FLAG
 CE03   E9 57                SBC #$57
-CE05   85 F4                STA $F4
+CE05   85 F4                STA $F4							;LINE START POINTER IN VISUAL MEMORY
 CE07   A5 F3                LDA $F3
 CE09   E9 02                SBC #$02
-CE0B   85 F5                STA $F5
+CE0B   85 F5                STA $F5							;LINE START PAGE POINTER IN VISUAL MEMORY
 CE0D   A9 58                LDA #$58
-CE0F   85 F8                STA $F8
+CE0F   85 F8                STA $F8							;LOW BYTE OF BYTES TO CLEAR - 600 BYTES FOR 1 TEXT LINE 
 CE11   A9 02                LDA #$02
-CE13   85 F9                STA $F9
-CE15   20 06 D1   LCE15     JSR LD106
-CE18   20 1E CE             JSR LCE1E
-CE1B   4C 27 D1             JMP LD127
+CE13   85 F9                STA $F9							;HIGH BYTE OF BYTES TO CLEAR
+
+;CLEAR DESIRED PART OF DISPLAY ROUTINE
+
+CE15   20 06 D1   LCE15     JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
+CE18   20 1E CE             JSR LCE1E						;CLEAR SCREEN MEMORY ARREA
+CE1B   4C 27 D1             JMP LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0, RTS.
 CE1E   98         LCE1E     TYA								;PUSH Y ON STACK
 CE1F   48                   PHA
 CE20   A9 00                LDA #$00						;LOAD A=$00
-CE22   A4 F9                LDY $F9							
+CE22   A4 F9                LDY $F9							;3C FOR CLEAR DISPLAY
 CE24   F0 0F                BEQ LCE35
 CE26   A8                   TAY
-CE27   91 F4      LCE27     STA ($F4),Y
+CE27   91 F4      LCE27     STA ($F4),Y						;CLEAR FIRST SCREEN BYTE
 CE29   C8                   INY
-CE2A   91 F4                STA ($F4),Y
+CE2A   91 F4                STA ($F4),Y						;CLEAR SECOND SCREEN BYTE
 CE2C   C8                   INY
-CE2D   D0 F8                BNE LCE27
-CE2F   E6 F5                INC $F5
-CE31   C6 F9                DEC $F9
-CE33   D0 F2                BNE LCE27
-CE35   A4 F8      LCE35     LDY $F8
+CE2D   D0 F8                BNE LCE27						;CHECK OVERFLOW
+CE2F   E6 F5                INC $F5							;UPDATE VISABLE MEMORY POINTER
+CE31   C6 F9                DEC $F9							;DECREMENT BYTE COUNT TO CLEAR LEFT
+CE33   D0 F2                BNE LCE27						;ALL SCREEN BYTES CLEARED?
+CE35   A4 F8      LCE35     LDY $F8							;HERE IS $00 FOR SCREEN CLEARING
 CE37   F0 05                BEQ LCE3E
-CE39   88         LCE39     DEY
+CE39   88         LCE39     DEY								;IF THERE'S SOMETHING LEFT CLEAR IT TOO
 CE3A   91 F4                STA ($F4),Y
 CE3C   D0 FB                BNE LCE39
-CE3E   68         LCE3E     PLA
+CE3E   68         LCE3E     PLA								;RESTORE INDEX Y
 CE3F   A8                   TAY
 CE40   60                   RTS								;RETURN FROM SUBRUTINE
+
+
+
 CE41   AD 01 02   LINEFD    LDA LINE						;'LINEFD' ROUTINE - CURRENT LINE NUMBER OF TEXT CURSOR - LINE
 CE44   CD 1E 02             CMP NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CE47   90 0D                BCC LCE56
@@ -1436,13 +1451,13 @@ CE93   D0 02                BNE LCE97
 CE95   E6 F9                INC $F9
 CE97   20 9D CE   LCE97     JSR LCE9D
 CE9A   4C F0 CD   LCE9A     JMP LCDF0
-CE9D   20 06 D1   LCE9D     JSR LD106
+CE9D   20 06 D1   LCE9D     JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 CEA0   20 A6 CE             JSR LCEA6
-CEA3   4C 27 D1             JMP LD127
+CEA3   4C 27 D1             JMP LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0, RTS
 CEA6   98         LCEA6     TYA
 CEA7   48                   PHA
 CEA8   A0 00                LDY #$00						;START FROM TOP OF SCREEN - 0
-CEAA   A6 F9                LDX $F9							;249 LINES - DO NOT UPDATE LEGEND BOXES
+CEAA   A6 F9                LDX $F9							;250 LINES - DO NOT UPDATE LEGEND BOXES
 CEAC   F0 1D                BEQ LCECB
 CEAE   B1 F2      LCEAE     LDA ($F2),Y						;MOVE SCREEN UP 4 LINES LINE BY LINE. READ PREVIOUS LINE AND PUT IT ONE UP.
 CEB0   91 F4                STA ($F4),Y
@@ -1468,7 +1483,7 @@ CED1   91 F4                STA ($F4),Y
 CED3   C8                   INY
 CED4   CA                   DEX
 CED5   D0 F8                BNE LCECF
-CED7   68         LCED7     PLA
+CED7   68         LCED7     PLA								;RESTORE INDEX Y
 CED8   A8                   TAY
 CED9   60                   RTS								;RETURN FROM SUBRUTINE
 CEDA   48         LCEDA     PHA
@@ -1486,7 +1501,7 @@ CEEF   60                   RTS								;RETURN FROM SUBRUTINE
 CEF0   CE 00 02   LCEF0     DEC COL							;CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80 "COL"
 CEF3   D0 12                BNE LCF07
 CEF5   48                   PHA
-CEF6   A9 50                LDA #$50
+CEF6   A9 50                LDA #$50						;80 CHARACTERS PER LINE
 CEF8   8D 00 02             STA COL							;CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80 "COL"
 CEFB   CE 01 02             DEC LINE						;DECREMENT CURRENT LINE NUMBER OF TEXT CURSOR - LINE-1
 CEFE   D0 06                BNE LCF06
@@ -1676,9 +1691,9 @@ D03F   85 F7                STA $F7							;FONT TABLE PAGE			-FOR KIM $20
 D041   A9 01                LDA #$01
 D043   8D D0 02   LD043     STA $02D0						;FONT TABLE BANK			-FOR KIM $00
 D046   20 92 CF             JSR LCF92
-D049   20 06 D1             JSR LD106
+D049   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 D04C   A6 FC                LDX $FC
-D04E   BD 84 D0             LDA $D084,X
+D04E   BD 84 D0             LDA $D084,X						;
 D051   8D B2 02             STA $02B2
 D054   BD 7C D0             LDA $D07C,X
 D057   8D B1 02             STA $02B1
@@ -1686,19 +1701,19 @@ D05A   A2 09                LDX #$09
 D05C   A0 01      LD05C     LDY #$01
 D05E   AD B2 02             LDA $02B2
 D061   31 F4                AND ($F4),Y
-D063   1D BD 02             ORA $02BD,X
+D063   1D BD 02             ORA $02BD,X						;OVERLAY WITH GRAPHIC MEMORY
 D066   91 F4                STA ($F4),Y
 D068   88                   DEY
 D069   AD B1 02             LDA $02B1
 D06C   31 F4                AND ($F4),Y
-D06E   1D B3 02             ORA $02B3,X
+D06E   1D B3 02             ORA $02B3,X						;OVERLAY WITH GRAPHIC MEMORY
 D071   91 F4                STA ($F4),Y
 D073   20 49 D1             JSR LD149
 D076   CA                   DEX
 D077   10 E3                BPL LD05C
-D079   4C 27 D1             JMP LD127
+D079   4C 27 D1             JMP LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0, RTS
 
-;EQUATES LOW BYTE
+;TABLE OF MASKS FOR OPENING UP A 5 BIT WINDOW ANYWHERE IN GRAPHIC MEMORY
 D07C   03       
 D07D   81 
 D07E   C0       
@@ -1717,6 +1732,8 @@ D089   1F
 D08A   0F       
 D08B   07  
      
+;TEXT CURSOR ON AND OFF ROUTINES
+	 
 D08C   0E 1B 02   OFFTCR    ASL $021B						;'OFFTCR' ROUTINE - TO TURN THE TEXT CURSOR OFF IF IT'S ON SO CARRY HAS TO BE ADDED AS $021B IS NORMALLY "0"
 D08F   B0 05                BCS FLPTCR                      ;IF CARRY SET GO TO FLPTCR
 D091   60                   RTS								;RETURN FROM SUBRUTINE
@@ -1746,7 +1763,7 @@ D0A6   60                   RTS								;RETURN FROM SUBRUTINE
 ;$F4 - LOW BYTE VISABLE MEMORY POINTER
 
 D0A7   20 3E D1   LD0A7     JSR LD13E						;UPDATE BASE VISABLE MEMORY POINTER AND PAGE TO NEW CURSOR POSITION
-D0AA   20 06 D1             JSR LD106                       ;CHANGE MEMORY BANK TO ENABLE SAVE TO VISABLE MEMORY AREA
+D0AA   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 D0AD   A6 FC                LDX $FC                         ;3 LOW BYTES OF PREVIOUS CURSOR LOCATION PLACE PRESERVED EARLIER - SO SOME PREDEFINIED CELLS POSITIONS
 D0AF   BD FE D0             LDA D0FE,X                      
 D0B2   8D B2 02             STA $02B2                       ;FIRST TEMP BYTE FOR DISPLAY FONT/CURSOR CELL
@@ -1764,10 +1781,10 @@ D0CC   91 F4                STA ($F4),Y                     ;SAVE SECOND PART ON
 D0CE   20 49 D1             JSR LD149                       ;CHECK PIXEL POSITION IN LINE AND UPDATE VISABLE MEMORY PAGE IF NEEDED
 D0D1   CA                   DEX                             ;DECREMENT X - FOR NEW CELL POSITION PART
 D0D2   10 E9                BPL LD0BD                       ;DRAW WHOLE CELL
-D0D4   4C 27 D1             JMP LD127                       ;GO BACK TO BANK 0 - DISABLES ACCESS TO VISABLE MEMORY
+D0D4   4C 27 D1             JMP LD127						;GO BACK TO BANK 0 - DISABLES ACCESS TO VISABLE MEMORY, RTS
 D0D7   20 3E D1   LD0D7     JSR LD13E                       ;UPDATE VISABLE MEMORY POINTERS TO PREVIOUS VALUES
 D0DA   20 49 D1             JSR LD149                       ;CHECK PIXEL POSITION IN LINE AND UPDATE VISABLE MEMORY PAGE IF NEEDED
-D0DD   20 06 D1             JSR LD106                       ;CHANGE MEMORY BANK TO ENABLE SAVE TO VISABLE MEMORY AREA
+D0DD   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 D0E0   A6 FC                LDX $FC                         ;3 LOW BYTES OF PREVIOUS CURSOR LOCATION PLACE PRESERVERD EARLIER - SOME PREDEFINIED CELL POSITIONS
 D0E2   BD FE D0             LDA D0FE,X                      ;FIRST TEMP BYTE FOR DISPLAY FONT/CURSOR CELL
 D0E5   A0 01                LDY #$01                        ;TWO BYTES UPDATE IN ONE PASS
@@ -1777,7 +1794,7 @@ D0EB   88                   DEY
 D0EC   BD F6 D0             LDA $D0F6,X                     ;SECOND BYTE TO UPDATE
 D0EF   51 F4                EOR ($F4),Y                     ;REVERSE WHAT'S IN IT
 D0F1   91 F4                STA ($F4),Y                     ;SAVE ON SCREEN
-D0F3   4C 27 D1             JMP LD127                       ;GO BACK TO BANK 0 - DISABLES ACCESS TO VISABLE MEMORY
+D0F3   4C 27 D1             JMP LD127						;GO BACK TO BANK 0 - DISABLES ACCESS TO VISABLE MEMORY, RTS
 
 ;EQUATES FOR CURSOR CELL POSITIONS
 D0F6   FC        
@@ -1864,11 +1881,11 @@ D175   AC 24 02             LDY CLKPER						;Click waveform period in units of 2
 D178   AE 26 02             LDX CLKCY						;Click duration in units of complete waveform cycles. 'CLKCY'
 D17B   AD 25 02             LDA CLKVOL						;Click volume, $00 = minimum, $7F = maximum. 'CLKVOL'
 D17E   20 87 D1   LD17E     JSR BEEP
-D181   68                   PLA
+D181   68                   PLA								;RESTORE INDEX Y
 D182   A8                   TAY
-D183   68                   PLA
+D183   68                   PLA								;RESTORE INDEX X
 D184   AA                   TAX
-D185   68                   PLA
+D185   68                   PLA								;RESTORE ACCUMULATOR
 D186   60         LD186     RTS								;RETURN FROM SUBRUTINE
 D187   C9 00      BEEP      CMP #$00						;'BEEP' ROUTINE
 D189   10 01                BPL LD18C
@@ -1906,21 +1923,24 @@ D1C7   E9 01      LD1C7     SBC #$01
 D1C9   D0 FC                BNE LD1C7
 D1CB   88                   DEY
 D1CC   D0 F6                BNE LD1C4
-D1CE   68                   PLA
+D1CE   68                   PLA								;RESTORE INDEX Y
 D1CF   A8                   TAY
 D1D0   60                   RTS								;RETURN FROM SUBRUTINE
+
+;DRAW LEGEND BOXES ON SCREEN
+
 D1D1   20 DD CD   DRWLEG    JSR CLRLEG						;'DRWLEG' - TO DRAW THE FUNCTION KEY LEGEND BOXES AND THEIR LABELS
 D1D4   A0 00                LDY #$00
 D1D6   A9 05                LDA #$05
 D1D8   85 FC                STA $FC
-D1DA   A9 FB                LDA #$FB
-D1DC   85 F3                STA $F3
+D1DA   A9 FB                LDA #$FB						
+D1DC   85 F3                STA $F3							;HIGH BYTE OF VISUAL MEMORY FOR START OF LEGEND BOXES
 D1DE   A9 88                LDA #$88
-D1E0   85 F2      LD1E0     STA $F2
+D1E0   85 F2      LD1E0     STA $F2							;LOW BYTE OF VISUAL MEMORY FOR START OF LEGEND BOXES
 D1E2   A9 08      LD1E2     LDA #$08
-D1E4   85 F8                STA $F8
+D1E4   85 F8                STA $F8							;PAGES FOR LEGEND BOXES
 D1E6   20 3E D1   LD1E6     JSR LD13E
-D1E9   B9 C0 05             LDA $05C0,Y
+D1E9   B9 C0 05             LDA $05C0,Y						;FUNCTION KEY BOXES TABLE
 D1EC   38                   SEC								;SET CARRY FLAG
 D1ED   E9 20                SBC #$20
 D1EF   90 04                BCC LD1F5
@@ -1948,14 +1968,14 @@ D218   A9 A6                LDA #$A6
 D21A   D0 C4                BNE LD1E0
 D21C   C0 40      LD21C     CPY #$40
 D21E   90 C2                BCC LD1E2
-D220   A9 C4                LDA #$C4			;?? BANK SWITCH RUTINE ??
+D220   A9 C4                LDA #$C4						
 D222   85 F2                STA $F2
 D224   A9 FB                LDA #$FB
 D226   85 F3                STA $F3
 D228   20 2F D2             JSR LD22F
 D22B   A9 E2                LDA #$E2
 D22D   85 F2                STA $F2
-D22F   20 06 D1   LD22F     JSR LD106
+D22F   20 06 D1   LD22F     JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 D232   A9 04                LDA #$04
 D234   85 F8                STA $F8
 D236   20 4D D2   LD236     JSR LD24D
@@ -1967,7 +1987,7 @@ D240   C6 F8                DEC $F8
 D242   D0 F2                BNE LD236
 D244   20 3E D1             JSR LD13E
 D247   20 60 D2             JSR LD260
-D24A   4C 27 D1             JMP LD127
+D24A   4C 27 D1             JMP LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0, RTS
 D24D   20 3E D1   LD24D     JSR LD13E
 D250   20 56 D2             JSR LD256
 D253   20 60 D2             JSR LD260
