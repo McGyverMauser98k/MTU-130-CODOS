@@ -1815,6 +1815,8 @@ D103   E0
 D104   F0
 D105   F8        
 
+;MEMORY BANK SWITCHING FOR VISABLE MEMORY
+
 D106   20 1C D1   LD106     JSR LD11C						;TURN ON I/O AREA SUBRUTINE - DISABLES RAM AREA BE00-BFFF -2 PAGES 512 BYTES AND TURN ON I/O AREA
 D109   AD E0 BF             LDA $BFE0						;SYSTEM 1 6522 SYSTEM CONTROL PORT DATA REGISTER
 D10C   09 03                ORA #$03                
@@ -1861,22 +1863,22 @@ D152   C6 F5                DEC $F5                 		;UPDATE VISABLE MEMORY PAG
 D154   60         LD154     RTS								;RETURN FROM SUBRUTINE
 D155   2C 14 02   LD155     BIT NOBELL						;IF BIT 7=1 THEN BEL CHARACTER IS IGNORED 'NOBELL'
 D158   30 2C                BMI LD186
-D15A   48                   PHA								;SAVE REGISTERS
-D15B   8A                   TXA
-D15C   48                   PHA
-D15D   98                   TYA
-D15E   48                   PHA
+D15A   48                   PHA								;SAVE ACCUMULATOR ON STACK
+D15B   8A                   TXA                             
+D15C   48                   PHA                             ;SAVE INDEX X ON STACK
+D15D   98                   TYA                             
+D15E   48                   PHA                             ;SAVE INDEX Y ON STACK
 D15F   AC 27 02             LDY BELPER						;BELL SOUND WAVEFORM PERIOD IN UNITS OF 200 MICROSECONDS
 D162   AE 29 02             LDX BELCY						;BELL SOUND DURATION IN UNITS OF COMPLETE WAVEFORM CYCLES
 D165   AD 28 02             LDA BELVOL						;BELL SOUND VOLUME. $00 MINIMUM, $7F MAXIMUM. 'BELVOL'
 D168   4C 7E D1             JMP LD17E
 D16B   2C 13 02   LD16B     BIT $NOCLIK						;If 7=1 then no click when a key is pressed. 
 D16E   30 16                BMI LD186
-D170   48                   PHA								;SAVE REGISTERS
+D170   48                   PHA								;SAVE ACCUMULATOR ON STACK
 D171   8A                   TXA
-D172   48                   PHA
+D172   48                   PHA								;SAVE INDEX X ON STACK
 D173   98                   TYA
-D174   48                   PHA
+D174   48                   PHA								;SAVE INDEX Y ON STACK
 D175   AC 24 02             LDY CLKPER						;Click waveform period in units of 200 microseconds. 'CLKPER'
 D178   AE 26 02             LDX CLKCY						;Click duration in units of complete waveform cycles. 'CLKCY'
 D17B   AD 25 02             LDA CLKVOL						;Click volume, $00 = minimum, $7F = maximum. 'CLKVOL'
@@ -1891,7 +1893,7 @@ D187   C9 00      BEEP      CMP #$00						;'BEEP' ROUTINE
 D189   10 01                BPL LD18C
 D18B   4A                   LSR A
 D18C   8D B0 02   LD18C     STA $02B0
-D18F   8A                   TXA
+D18F   8A                   TXA								;SAVE INDEX X ON STACK
 D190   48                   PHA
 D191   20 1C D1             JSR LD11C						;TURN ON I/O AREA
 D194   A9 FF                LDA #$FF
@@ -1911,12 +1913,12 @@ D1B2   10 E5                BPL LD199
 D1B4   A9 80                LDA #$80
 D1B6   8D F1 BF             STA $BFF1						;SYSTEM 2 6522 AUDIO DAC PORT DATA REGISTER
 D1B9   20 2F D1             JSR LD12F
-D1BC   68                   PLA
+D1BC   68                   PLA								;RESTORE INDEX X
 D1BD   AA                   TAX
 D1BE   AD B0 02             LDA $02B0
 D1C1   60                   RTS								;RETURN FROM SUBRUTINE
-D1C2   98         LD1C2     TYA
-D1C3   48                   PHA
+D1C2   98         LD1C2     TYA								;SAVE Y ON STACK
+D1C3   48                   PHA								
 D1C4   A9 12      LD1C4     LDA #$12
 D1C6   38                   SEC								;SET CARRY FLAG
 D1C7   E9 01      LD1C7     SBC #$01
