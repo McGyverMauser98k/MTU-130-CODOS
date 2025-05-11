@@ -263,10 +263,10 @@ C5D8 .byte  $B4 ;'SHIFT/ HOME
 C5D9 .byte  $FF      
 C5DA .byte  $FF      
 
-;JUMP TABLE FOR UNKNOWN KEYBOARD ENTRY
+;JUMP TABLE
 C5DB .byte  $82       
 C5DC .byte  $C6 
-C5DD .byte  $03 ;'CTRL-C'      
+C5DD .byte  $03 ; $0303 JUMP EXECUTED WHEN CTRL-C IS ENTERED FROM CONSOLE   
 C5DE .byte  $03            
 C5DF .byte  $8B            
 C5E0 .byte  $C6 
@@ -367,11 +367,14 @@ C667   10 C6                BPL LC62F
 C669   8A         LC669     TXA
 C66A   0A                   ASL A
 C66B   AA                   TAX
-C66C   BD DB C5             LDA $C5DB,X
+
+;GENERATE JUMP ACCORDING TO JUMP TABLE X=0 UP TO X=1F SO 32 POSSIBILITIES
+
+C66C   BD DB C5             LDA $C5DB,X						;JUMP TABLE LOW BYTE
 C66F   8D DC 02             STA $02DC
-C672   BD DC C5             LDA $C5DC,X
+C672   BD DC C5             LDA $C5DC,X						;JUMP TABLE HIGH BYTE
 C675   8D DD 02             STA $02DD
-C678   6C DC 02             JMP ($02DC)
+C678   6C DC 02             JMP ($02DC)						;JUMP TABLE FOR SOME DEFINIED KEYPRESS LIKE CTRL-C
 C67B   E8         LC67B     INX
 C67C   BD B0 C5             LDA $C5B0,X						;ARITHMETIC KEYS
 C67F   4C 3A C6             JMP LC63A
