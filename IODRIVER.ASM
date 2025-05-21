@@ -391,7 +391,7 @@ C699   4C 2F C6             JMP LC62F
 C69C   CC D5 02             CPY $02D5
 C69F   F0 07                BEQ LC6A8
 C6A1   88                   DEY
-C6A2   20 F0 CE   LC6A2     JSR LCEF0
+C6A2   20 F0 CE   LC6A2     JSR LCEF0						;CHECK END OF LINE OR END OF SCREEN
 C6A5   4C 2A C6             JMP LC62A
 C6A8   C4 FD      LC6A8     CPY $FD
 C6AA   F0 F6                BEQ LC6A2
@@ -427,7 +427,7 @@ C6E8   4C DB C6             JMP LC6DB
 C6EB   20 6F CD             JSR CLRHTW
 C6EE   8C D5 02   LC6EE     STY $02D5
 C6F1   4C 2A C6             JMP LC62A
-C6F4   18                   CLC
+C6F4   18                   CLC								;0D ENTER WAS PRESSED AND RECOGNIZED
 C6F5   A4 FD                LDY $FD
 C6F7   A9 0D      LC6F7     LDA #$0D
 C6F9   91 F0                STA ($F0),Y						;FO - POINTER TO LINE-BUFFER USED FOR INLINE AND ENDLINE
@@ -497,18 +497,18 @@ C793   CC D5 02   LC793     CPY $02D5
 C796   F0 20                BEQ LC7B8
 C798   2C D7 02             BIT $02D7
 C79B   10 07                BPL LC7A4
-C79D   20 F0 CE             JSR LCEF0
+C79D   20 F0 CE             JSR LCEF0						;CHECK END OF LINE OR END OF SCREEN
 C7A0   88                   DEY
 C7A1   4C 49 C8             JMP LC849
 C7A4   C4 FD      LC7A4     CPY $FD
 C7A6   90 02                BCC LC7AA
 C7A8   C6 FD                DEC $FD
 C7AA   88         LC7AA     DEY
-C7AB   20 F0 CE             JSR LCEF0
+C7AB   20 F0 CE             JSR LCEF0						;CHECK END OF LINE OR END OF SCREEN
 C7AE   A9 20                LDA #$20
 C7B0   91 F0                STA ($F0),Y						;FO - POINTER TO LINE-BUFFER USED FOR INLINE AND ENDLINE
 C7B2   20 88 C7             JSR LC788
-C7B5   20 F0 CE             JSR LCEF0
+C7B5   20 F0 CE             JSR LCEF0						;CHECK END OF LINE OR END OF SCREEN
 C7B8   60         LC7B8     RTS								;RETURN FROM SUBRUTINE
 C7B9   8C D4 02   LC7B9     STY $02D4
 C7BC   C4 FD      LC7BC     CPY $FD
@@ -624,7 +624,7 @@ C8A2   38                   SEC								;SET CARRY FLAG
 C8A3   ED D4 02             SBC $02D4
 C8A6   AA                   TAX
 C8A7   F0 06                BEQ LC8AF
-C8A9   20 F0 CE   LC8A9     JSR LCEF0
+C8A9   20 F0 CE   LC8A9     JSR LCEF0						;CHECK END OF LINE OR END OF SCREEN
 C8AC   CA                   DEX
 C8AD   D0 FA                BNE LC8A9
 C8AF   AC D4 02   LC8AF     LDY $02D4
@@ -662,6 +662,9 @@ C8EF   29 7F                AND #$7F						;INSURE 7 BIT ASCII INPUT
 C8F1   C9 0D                CMP #$0D						;IS IT CARRIAGE RETURN?
 C8F3   0E 39 02             ASL $0239
 C8F6   60                   RTS								;RETURN FROM SUBRUTINE
+;
+;
+;
 C8F7   20 1B C9   LC8F7     JSR LC91B
 C8FA   A0 FF                LDY #$FF
 C8FC   C8         LC8FC     INY
@@ -790,7 +793,7 @@ C9B7   D0 DA                BNE GETK1           			; LOOP BACK IF DELAY NOT EXPI
 C9B9   38                   SEC								; SET REPEAT FLAG TO AVOID DELAY NEXT TIME
 C9BA   6E 0E 02             ROR RPTFLG          		 
 C9BD   AD ED BF   GETK3     LDA KBIFR						;TEST IF REPEAT TIMER (T1) EXPIRED
-C9C0   29 40                AND #$40            		
+C9C0   29 40                AND #$40
 C9C2   F0 CF                BEQ GETK1           			; LOOP BACK IF REPEAT DELAY UNEXPIRED    
 C9C4   D0 4B                BNE GETK10          			; OTHERWISE GO OUTPUT THE REPEATED CODE`    
 C9C6   CA         GETK4     DEX                 			; DECREMENT DEBOUNCE DELAY
@@ -1284,29 +1287,29 @@ CBF4   2C 19 02             BIT EXTHI						;IF BIT 7=1 THEN CALL USER RUTINE TO 
 CBF7   10 59                BPL LCC52
 CBF9   6C 33 02             JMP (QEXHI7)					;ADRES OF EXTERNAL PROCESSOR FOR CHARACTERS WITH BIT 7=1. 'QEXHT7'
 CBFC   38         LCBFC     SEC								;SET CARRY FLAG
-CBFD   E9 20                SBC #$20
-CBFF   B0 03                BCS LCC04
-CC01   4C 80 CC             JMP LCC80
+CBFD   E9 20                SBC #$20						
+CBFF   B0 03                BCS LCC04						;CHECK IS ABOVE #$20
+CC01   4C 80 CC             JMP LCC80						;IF IT'S BELOW #$20 GO THERE
 CC04   48         LCC04     PHA
 CC05   0E 1D 02             ASL $021D
 CC08   20 3B D1             JSR LD13B
 CC0B   68                   PLA
-CC0C   C9 5F                CMP #$5F
-CC0E   D0 13                BNE LCC23
+CC0C   C9 5F                CMP #$5F						;CHECK IS IT DEL CHARACTER "#$7F" -#$20
+CC0E   D0 13                BNE LCC23						;IF NOT SKIP
 CC10   2C 16 02             BIT SHODEL						;IF BIT 7=1 THEN DISPLAY DEL AS A ROBOUT CHARACTER SHAPE. 'SHODEL'
-CC13   30 1D                BMI LCC32
-CC15   20 F0 CE             JSR LCEF0
+CC13   30 1D                BMI LCC32						
+CC15   20 F0 CE             JSR LCEF0						;CHECK END OF LINE OR END OF SCREEN
 CC18   20 3B D1             JSR LD13B
 CC1B   A9 00                LDA #$00
-CC1D   20 0B D0             JSR LD00B
-CC20   4C 48 CC             JMP LCC48
-CC23   C9 3F      LCC23     CMP #$3F
-CC25   D0 0B                BNE LCC32
+CC1D   20 0B D0             JSR LD00B						;DRAW ON SCREEN
+CC20   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
+CC23   C9 3F      LCC23     CMP #$3F						;UNDERLINE "#$5F" -#$20
+CC25   D0 0B                BNE LCC32						;IF NOT SKIP
 CC27   2C 17 02             BIT SHOUL						;IF BIT 7=1 THEN CHARACTER CELL IS ERASED BEFORE THE UNDERLINE CHARACTER IS DRAWN. 'SHOUL'
 CC2A   30 06                BMI LCC32
 CC2C   20 D7 D0             JSR LD0D7
 CC2F   4C 45 CC             JMP LCC45
-CC32   20 0B D0   LCC32     JSR LD00B
+CC32   20 0B D0   LCC32     JSR LD00B						;DRAW ON SCREEN
 CC35   2C 12 02             BIT UNDRLN						;IF BIT 7=1 THEN ALL CHARACTERS UNDERLINED WHEN DRAWN. 'UNDRLN'
 CC38   10 03                BPL LCC3D
 CC3A   20 D7 D0             JSR LD0D7
@@ -1318,23 +1321,27 @@ CC48   AC C9 02   LCC48     LDY $02C9						;RECOVER Y
 CC4B   AE C8 02             LDX $02C8						;RECOVER X
 CC4E   AD C7 02             LDA $02C7						;RECOVER A
 CC51   60                   RTS								;RETURN FROM SUBRUTINE
+;
+;
+;SOMETHING
+;
 CC52   A2 08      LCC52     LDX #$08
 CC54   DD FF CC   LCC54     CMP $CCFF,X
 CC57   F0 21                BEQ LCC7A
 CC59   CA                   DEX
 CC5A   10 F8                BPL LCC54
-CC5C   C9 A0                CMP #$A0
+CC5C   C9 A0                CMP #$A0				;160?
 CC5E   D0 06                BNE LCC66
 CC60   20 08 CF             JSR LCF08
-CC63   4C 48 CC             JMP LCC48
-CC66   C9 A2      LCC66     CMP #$A2
+CC63   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
+CC66   C9 A2      LCC66     CMP #$A2				;162?
 CC68   D0 06                BNE LCC70
 CC6A   20 DA CE             JSR LCEDA
-CC6D   4C 48 CC             JMP LCC48
-CC70   C9 A4      LCC70     CMP #$A4
-CC72   D0 D4                BNE LCC48
+CC6D   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
+CC70   C9 A4      LCC70     CMP #$A4				;164?
+CC72   D0 D4                BNE LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CC74   20 72 CD             JSR HOMETW						;TO PLACE CURSOR IN THE HOME POSITION (COL=1, LINE=1)
-CC77   4C 48 CC             JMP LCC48
+CC77   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CC7A   BD 08 CD   LCC7A     LDA $CD08,X
 CC7D   4C FC CB             JMP LCBFC
 CC80   18         LCC80     CLC
@@ -1345,35 +1352,35 @@ CC88   6C 2F 02             JMP (QEXCC)						;ADRES OF EXTERNAL CHARACTER PROCES
 CC8B   C9 0D      LCC8B     CMP #$0D						;TEST IF CARRIAGE RETURN
 CC8D   D0 0B                BNE LCC9A
 CC8F   0E 1D 02             ASL $021D
-CC92   B0 B4                BCS LCC48
+CC92   B0 B4                BCS LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CC94   20 7D CD             JSR CRLF						;TO MOVE CURSOR TO THE LEFT SCREEN EDGE AND DOWN ONE LINE
-CC97   4C 48 CC             JMP LCC48
+CC97   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CC9A   C9 0A      LCC9A     CMP #$0A						;TEST IF LINE FEED
 CC9C   D0 06                BNE LCCA4
 CC9E   20 41 CE             JSR LINEFD						;TO MOVE CURSOR DOWN ONE TEXT LINE
-CCA1   4C 48 CC             JMP LCC48
+CCA1   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CCA4   CD 2B 02   LCCA4     CMP $022B						;#$08
 CCA7   D0 06                BNE LCCAF
-CCA9   20 F0 CE             JSR LCEF0
-CCAC   4C 48 CC             JMP LCC48
-CCAF   CD 2E 02   LCCAF     CMP $022E						;#$18
+CCA9   20 F0 CE             JSR LCEF0						;CHECK END OF LINE OR END OF SCREEN
+CCAC   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
+CCAF   CD 2E 02   LCCAF     CMP $022E						;#$18 - KIM-1 LESS THAN THAT
 CCB2   D0 0E                BNE LCCC2
 CCB4   AD 01 02             LDA LINE 						;CURRENT LINE NUMBER OF TEXT CURSOR
 CCB7   20 F3 CD             JSR CLRTLN						;CLEAR SPECIFIED TEXT LINE
 CCBA   A9 01                LDA #$01
 CCBC   8D 00 02             STA COL							;CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80 "COL" "COL"
-CCBF   4C 48 CC             JMP LCC48
+CCBF   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CCC2   CD 2D 02   LCCC2     CMP $022D						;#$0C
 CCC5   D0 06                BNE LCCCD
 CCC7   20 6F CD             JSR CLRHTW						;CLEAR TEXT WINDOW AND HOME CURSOR
-CCCA   4C 48 CC             JMP LCC48
+CCCA   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CCCD   CD 2A 02   LCCCD     CMP $022A						;#$07
 CCD0   D0 06                BNE LCCD8
 CCD2   20 55 D1             JSR LD155
-CCD5   4C 48 CC             JMP LCC48
+CCD5   4C 48 CC             JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CCD8   CD 2C 02   LCCD8     CMP $022C						;#$09
 CCDB   F0 03                BEQ LCCE0
-CCDD   4C 48 CC   LCCDD     JMP LCC48
+CCDD   4C 48 CC   LCCDD     JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CCE0   A2 00      LCCE0     LDX #$00
 CCE2   BD E0 06   LCCE2     LDA $06E0,X						;TAB STOP TABLE. 'TABTBL'
 CCE5   F0 15                BEQ LCCFC
@@ -1387,7 +1394,7 @@ CCF5   90 E6                BCC LCCDD
 CCF7   E8         LCCF7     INX
 CCF8   E0 20                CPX #$20
 CCFA   D0 E6                BNE LCCE2
-CCFC   4C 48 CC   LCCFC     JMP LCC48
+CCFC   4C 48 CC   LCCFC     JMP LCC48						;RECOVER REGISTERS AND RETURN FROM SUBROUTINE
 CCFF   .byte $00          
 CD00   .byte $8A          
 CD01   .byte $8B          
@@ -1518,7 +1525,7 @@ CDB0   8A                   TXA													;TRANSFER X TO A
 CDB1   48                   PHA													;PRESERVE X TO STACK
 CDB2   AD 1F 02             LDA YTDOWN						;255-(Y COORDINATTE OF TOP OF THE TEXT WINDOW - 'YTDOWN'
 CDB5   20 63 CF             JSR LCF63
-CDB8   20 3E D1             JSR LD13E
+CDB8   20 3E D1             JSR LD13E						;COPY F2-->F4 AND F3-->F5
 CDBB   AD 1E 02             LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CDBE   A2 50                LDX #$50						;80 CHARACTERS PER LINE
 CDC0   20 36 CF             JSR LCF36
@@ -1614,26 +1621,26 @@ CE53   8D 01 02             STA LINE						;SAVE CURRENT LINE NUMBER OF TEXT CURS
 CE56   EE 01 02   LCE56     INC LINE						;INCREMENT CURRENT LINE NUMBER OF TEXT CURSOR LINE+1
 CE59   60                   RTS								;RETURN FROM SUBRUTINE
 
-;IF SCROLLING WAS USED
+;IF SCROLLING TO TOP OF SCREEN WAS USED
 
 CE5A   AD 1E 02   LCE5A     LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
-CE5D   C9 02                CMP #$02
+CE5D   C9 02                CMP #$02						;IF ONLY TWO LINES ON DISPLAY JUST ERASE PREVIOUS LINE
 CE5F   90 39                BCC LCE9A
-CE61   A2 50                LDX #$50
-CE63   20 36 CF             JSR LCF36
+CE61   A2 50                LDX #$50						;80 CHARACTERS ON SCREEN?
+CE63   20 36 CF             JSR LCF36						;COMPUTE TOP OF SCREEN POSITION
 CE66   A5 F2                LDA $F2
 CE68   85 F8                STA $F8
 CE6A   A5 F3                LDA $F3
 CE6C   85 F9                STA $F9
 CE6E   AD 1F 02             LDA YTDOWN						;255-(Y COORDINATTE OF TOP OF THE TEXT WINDOW - 'YTDOWN'
 CE71   20 63 CF             JSR LCF63
-CE74   20 3E D1             JSR LD13E
+CE74   20 3E D1             JSR LD13E						;COPY F2-->F4 AND F3-->F5
 CE77   A5 F4                LDA $F4
 CE79   18                   CLC
-CE7A   69 58                ADC #$58
+CE7A   69 58                ADC #$58						;GO TO NEXT LINE + 1 BYTE. FOR KIM-1 PROBABLY 3D WIILL BE FINE HERE.
 CE7C   85 F2                STA $F2
 CE7E   A5 F5                LDA $F5
-CE80   69 02                ADC #$02
+CE80   69 02                ADC #$02						;ADD SEPARATOR LINE BETWEEN TEXT LINES -2 FOR 480PIX AND FOR KIM-1 SHOULD BE 1- ABOUT FOR 320PIX
 CE82   85 F3                STA $F3
 CE84   A5 F8                LDA $F8
 CE86   38                   SEC								;SET CARRY FLAG
@@ -1697,23 +1704,26 @@ CEEB   6E 1D 02             ROR $021D
 CEEE   68                   PLA
 CEEF   60                   RTS								;RETURN FROM SUBRUTINE
 
+;MOVE TO NEXT LINE OR START OVER FROM TOP OF SCREEN
 
 CEF0   CE 00 02   LCEF0     DEC COL							;CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80 "COL"
-CEF3   D0 12                BNE LCF07
-CEF5   48                   PHA
-CEF6   A9 50                LDA #$50						;80 CHARACTERS PER LINE
+CEF3   D0 12                BNE LCF07						;CHECK END OF CURRENT LINE
+CEF5   48                   PHA								;SAVE A ON STACK
+CEF6   A9 50                LDA #$50						;80 CHARACTERS PER LINE (#$50 S0 80 DEC.)
 CEF8   8D 00 02             STA COL							;CURRENT COLUMN LOCATION OF TEXT CURSOR 1-80 "COL"
-CEFB   CE 01 02             DEC LINE						;DECREMENT CURRENT LINE NUMBER OF TEXT CURSOR - LINE-1
-CEFE   D0 06                BNE LCF06
+CEFB   CE 01 02             DEC LINE						;DECREMENT CURRENT LINE NUMBER OF TEXT CURSOR - LINE-1 (1-24 "LINE" DEFAULT=#$18 SO 24 DEC.)
+CEFE   D0 06                BNE LCF06						;CHECK END OF SCREEN
 CF00   AD 1E 02             LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CF03   8D 01 02             STA LINE						;SAVE CURRENT LINE NUMBER OF TEXT CURSOR - LINE.
-CF06   68         LCF06     PLA
+CF06   68         LCF06     PLA								;RECOVER A FROM STACK
 CF07   60         LCF07     RTS								;RETURN FROM SUBRUTINE
 
-
+;GO ONE LINE DOWN
 CF08   CE 01 02   LCF08     DEC LINE						;DECREMENT CURRENT LINE NUMBER OF TEXT CURSOR - LINE-1
 CF0B   F0 01                BEQ LCF0E
 CF0D   60                   RTS								;RETURN FROM SUBRUTINE
+
+;GO TO TOP OF SCREEN IF IT WAS LAST LINE. SAVE REGISTER A.
 CF0E   48         LCF0E     PHA
 CF0F   AD 1E 02             LDA NLINET						;NUMBER OF TEXT LINES IN THE TEXT WINDOW - NLINET
 CF12   8D 01 02             STA LINE						;SAVE CURRENT LINE NUMBER OF TEXT CURSOR - LINE
@@ -1748,7 +1758,7 @@ CF38   0A                   ASL A
 CF39   0A                   ASL A                           
 CF3A   65 FA                ADC $FA                         
 CF3C   0A                   ASL A                           
-CF3D   6D 1F 02             ADC YTDOWN						;255-(Y COORDINATTE OF TOP OF THE TEXT WINDOW - 'YTDOWN'
+CF3D   6D 1F 02             ADC YTDOWN						;255-(Y COORDINATTE OF TOP OF THE TEXT WINDOW - 'YTDOWN') DEFAULT=0
 CF40   38                   SEC								;SET CARRY FLAG
 CF41   E9 01                SBC #$01                        
 CF43   20 63 CF             JSR LCF63                       ;COMPUTE SCREEN CURSOR POSITION WITH ACTUAL VALUES
@@ -1776,7 +1786,7 @@ CF60   60         LCF60     RTS								;IN A - LOW BYTE OF VISABLE MEMORY, X - C
 
 ;UPDATE CURSOR POSITION ON SCREEN
 
-CF61   49 FF                EOR #$FF					;SOMETHING UNUSED OR WHAT IS GOING ON HERE??
+CF61   49 FF      LCF61     EOR #$FF					;ENTRY POINT USED BY GRAPHDRIVER ONLY
 CF63   48         LCF63     PHA								;PRESERVE A TO STACK
 CF64   A9 00                LDA #$00						;LOAD #$00
 CF66   85 FB                STA $FB							;STORE AT $FB - RESET $FB TO #$00
@@ -1806,6 +1816,9 @@ CF8C   18                   CLC
 CF8D   69 C0                ADC #$C0						;START OF VISUAL MEMORY PAGE (192 SOMETHING)
 CF8F   85 F3                STA $F3                     ;UPDATED PAGE OF CURSOR POSITION ON SCREEN`
 CF91   60                   RTS								;RETURN FROM SUBRUTINE - A - PAGE OF CURSOR POSITION, $F3 - PAGE FOR CURSOR POSITION, $F2 - POINTER TO CURSOR POSITION
+
+
+
 CF92   20 FD CF   LCF92     JSR LCFFD
 CF95   20 1C D1             JSR TIOON						;TURN ON I/O AREA
 CF98   AD E0 BF             LDA $BFE0						;SYSTEM 1 6522 SYSTEM CONTROL PORT DATA REGISTER
@@ -1815,7 +1828,7 @@ CFA1   A0 06                LDY #$06
 CFA3   A2 00                LDX #$00
 CFA5   86 FA      LCFA5     STX $FA
 CFA7   B1 F6                LDA ($F6),Y
-CFA9   29 F8                AND #$F8
+CFA9   29 F8                AND #$F8						;PROBABLY END OF VISABLE SCREEN AREA
 CFAB   A6 FC                LDX $FC
 CFAD   F0 06                BEQ LCFB5
 CFAF   4A         LCFAF     LSR A
@@ -1889,10 +1902,10 @@ D02F   85 F7                STA $F7
 D031   AD 37 02             LDA EXFTBK						;MEMORY BANK NUMBER CONTAINING EXTERNAL FONT TABLE - DEFAULT 0. 'EXFTBK'
 D034   4C 43 D0             JMP LD043
 D037   69 50      LD037     ADC #$50
-D039   85 F6                STA $F6							;FONT TABLE POINTER			-FOR KIM $00
+D039   85 F6                STA $F6							;FONT TABLE POINTER			-FOR KIM $50
 D03B   A9 FD                LDA #$FD
 D03D   65 FB                ADC $FB
-D03F   85 F7                STA $F7							;FONT TABLE PAGE			-FOR KIM $20
+D03F   85 F7                STA $F7							;FONT TABLE PAGE			-FOR KIM $9D
 D041   A9 01                LDA #$01
 D043   8D D0 02   LD043     STA $02D0						;FONT TABLE BANK			-FOR KIM $00
 D046   20 92 CF             JSR LCF92
@@ -1913,7 +1926,7 @@ D069   AD B1 02             LDA $02B1
 D06C   31 F4                AND ($F4),Y
 D06E   1D B3 02             ORA $02B3,X						;OVERLAY WITH GRAPHIC MEMORY
 D071   91 F4                STA ($F4),Y
-D073   20 49 D1             JSR LD149
+D073   20 49 D1             JSR LD149						;MOVE UP ONE SCAN LINE
 D076   CA                   DEX
 D077   10 E3                BPL LD05C
 D079   4C 27 D1             JMP LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0, RTS
@@ -1967,14 +1980,14 @@ D0A6   60                   RTS								;RETURN FROM SUBRUTINE
 ;$02B1	- SCRATCH POINTER FOR FONT CELL
 ;$F4 - LOW BYTE VISABLE MEMORY POINTER
 
-D0A7   20 3E D1   LD0A7     JSR LD13E						;UPDATE BASE VISABLE MEMORY POINTER AND PAGE TO NEW CURSOR POSITION
+D0A7   20 3E D1   LD0A7     JSR LD13E						;UPDATE BASE VISABLE MEMORY POINTER AND PAGE TO NEW CURSOR POSITION						;COPY F2-->F4 AND F3-->F5
 D0AA   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 D0AD   A6 FC                LDX $FC                         ;3 LOW BYTES OF PREVIOUS CURSOR LOCATION PLACE PRESERVED EARLIER - SO SOME PREDEFINIED CELLS POSITIONS
 D0AF   BD FE D0             LDA D0FE,X                      
 D0B2   8D B2 02             STA $02B2                       ;FIRST TEMP BYTE FOR DISPLAY FONT/CURSOR CELL
 D0B5   BD F6 D0             LDA $D0F6,X                     
 D0B8   8D B1 02             STA $02B1                       ;HIGH BYTE FOR DISPLAY FONT/CURSOR CELL
-D0BB   A2 09                LDX #$09                        ;8 PASSES OF DRAWING
+D0BB   A2 09                LDX #$09                        ;10 PASSES OF DRAWING
 D0BD   A0 01      LD0BD     LDY #$01                        ;TWO BYTES UPDATE IN ONE PASS
 D0BF   AD B2 02             LDA $02B2                       ;LOAD FIRST POINTER
 D0C2   51 F4                EOR ($F4),Y                     ;REVERSE WHAT IS IN BYTE
@@ -1983,12 +1996,12 @@ D0C6   88                   DEY
 D0C7   AD B1 02             LDA $02B1                       ;SECOND POINTER PART
 D0CA   51 F4                EOR ($F4),Y                     ;
 D0CC   91 F4                STA ($F4),Y                     ;SAVE SECOND PART ON SCREEN
-D0CE   20 49 D1             JSR LD149                       ;CHECK PIXEL POSITION IN LINE AND UPDATE VISABLE MEMORY PAGE IF NEEDED
+D0CE   20 49 D1             JSR LD149                       ;MOVE UP ONE SCAN LINE
 D0D1   CA                   DEX                             ;DECREMENT X - FOR NEW CELL POSITION PART
 D0D2   10 E9                BPL LD0BD                       ;DRAW WHOLE CELL
 D0D4   4C 27 D1             JMP LD127						;GO BACK TO BANK 0 - DISABLES ACCESS TO VISABLE MEMORY, RTS
-D0D7   20 3E D1   LD0D7     JSR LD13E                       ;UPDATE VISABLE MEMORY POINTERS TO PREVIOUS VALUES
-D0DA   20 49 D1             JSR LD149                       ;CHECK PIXEL POSITION IN LINE AND UPDATE VISABLE MEMORY PAGE IF NEEDED
+D0D7   20 3E D1   LD0D7     JSR LD13E                       ;UPDATE VISABLE MEMORY POINTERS TO PREVIOUS VALUES						;COPY F2-->F4 AND F3-->F5
+D0DA   20 49 D1             JSR LD149                       ;MOVE UP ONE SCAN LINE
 D0DD   20 06 D1             JSR LD106						;TURN ON DISPLAY MEMORY BANK 1
 D0E0   A6 FC                LDX $FC                         ;3 LOW BYTES OF PREVIOUS CURSOR LOCATION PLACE PRESERVERD EARLIER - SOME PREDEFINIED CELL POSITIONS
 D0E2   BD FE D0             LDA D0FE,X                      ;FIRST TEMP BYTE FOR DISPLAY FONT/CURSOR CELL
@@ -2052,20 +2065,26 @@ D136   8D FF FF             STA $FFFF						;DISABLE I/O SPACE BE00-BFFF BY WRITI
 D139   28         LD139     PLP								;PULL PROCESSOR STATUS FROM STACK
 D13A   60                   RTS								;RETURN FROM SUBRUTINE
 D13B   20 17 CF   LD13B     JSR LCF17						;POSITION OF TEXT CURSOR
-D13E   48         LD13E     PHA                             ;SAVE A ON STACK
+D13E   48         LD13E     PHA                             ;SAVE A ON STACK						;COPY F2-->F4 AND F3-->F5
 D13F   A5 F2                LDA $F2                         ;UPDATED VISABE MEMORY POINTER
 D141   85 F4                STA $F4                         ;CURRENT VISABLE MEMORY POINTER
 D143   A5 F3                LDA $F3                         ;UPDATED VISABLE MEMORY PAGE
 D145   85 F5                STA $F5                         ;CURRENT VISABLE MEMORY PAGE
 D147   68                   PLA                             ;RESTORE LOW BYTE OF VISABLE MEMORY FROM STACK
 D148   60                   RTS								;RETURN FROM SUBRUTINE - A PRESERVED LOW VISABLE MEMORY BYTE
-D149   A5 F4      LD149     LDA $F4					
+
+;GO BACK TO LINE ABOVE WE CURRENTLY ARE AT, MOVE UP ONE SCAN LINE
+
+D149   A5 F4      LD149     LDA $F4							;ACTUAL POINTER TO POINT ON SCREEN		
 D14B   38                   SEC								;SET CARRY FLAG
-D14C   E9 3C                SBC #$3C						;LINE END FOR CHARACTERS - #$3C - 480PIX, FOR K-1008 - #$28 - 320 PIX LINE COUNT OF PIXELS KIM-1
-D14E   85 F4                STA $F4            	    	 	;UPDATE LOW VISABLE MEMORY POINTER
-D150   B0 02                BCS LD154           	    	;CHECK END OF PAGE
-D152   C6 F5                DEC $F5                 		;UPDATE VISABLE MEMORY PAGE
+D14C   E9 3C                SBC #$3C						;GO BACK 60 BYTES SO TO PREVIOUS LINE. LINE END FOR CHARACTERS - #$3C - 480PIX, FOR K-1008 - #$28 - 320 PIX LINE COUNT OF PIXELS KIM-1
+D14E   85 F4                STA $F4            	    	 	;UPDATE LOW VISABLE MEMORY POINTER TO PREVIOUS LINE
+D150   B0 02                BCS LD154           	    	;CHECK PAGE BOUNDRY WAS CROSSED IF CARRY WAS SET
+D152   C6 F5                DEC $F5                 		;UPDATE VISABLE MEMORY PAGE IF NEEDED
 D154   60         LD154     RTS								;RETURN FROM SUBRUTINE
+;
+;
+;
 D155   2C 14 02   LD155     BIT NOBELL						;IF BIT 7=1 THEN BEL CHARACTER IS IGNORED 'NOBELL'
 D158   30 2C                BMI LD186
 D15A   48                   PHA								;SAVE ACCUMULATOR ON STACK
@@ -2146,7 +2165,7 @@ D1DE   A9 88                LDA #$88
 D1E0   85 F2      LD1E0     STA $F2							;LOW BYTE OF VISUAL MEMORY FOR START OF LEGEND BOXES
 D1E2   A9 08      LD1E2     LDA #$08
 D1E4   85 F8                STA $F8							;PAGES FOR LEGEND BOXES
-D1E6   20 3E D1   LD1E6     JSR LD13E							;F2->F4, F3->F5
+D1E6   20 3E D1   LD1E6     JSR LD13E						;COPY F2-->F4 AND F3-->F5
 D1E9   B9 C0 05             LDA $05C0,Y						;FUNCTION KEY BOXES TABLE
 D1EC   38                   SEC								;SET CARRY FLAG
 D1ED   E9 20                SBC #$20
@@ -2192,10 +2211,10 @@ D23C   69 07                ADC #$07
 D23E   85 F2                STA $F2
 D240   C6 F8                DEC $F8
 D242   D0 F2                BNE LD236
-D244   20 3E D1             JSR LD13E
+D244   20 3E D1             JSR LD13E						;COPY F2-->F4 AND F3-->F5
 D247   20 60 D2             JSR LD260
 D24A   4C 27 D1             JMP LD127						;TURN OFF DISPLAY MEMORY AND GO BACK TO BANK 0, RTS
-D24D   20 3E D1   LD24D     JSR LD13E
+D24D   20 3E D1   LD24D     JSR LD13E						;COPY F2-->F4 AND F3-->F5
 D250   20 56 D2             JSR LD256
 D253   20 60 D2             JSR LD260
 D256   A0 06      LD256     LDY #$06						;LENGHT OF LEFT SIDE OF SINGLE BOX
@@ -2207,7 +2226,7 @@ D25F   60                   RTS								;RETURN FROM SUBRUTINE
 D260   A0 00      LD260     LDY #$00
 D262   A2 0D                LDX #$0D						;HEIGHT OF LEGEND BOX - 13 PIXELS
 D264   D0 03                BNE LD269
-D266   20 49 D1   LD266     JSR LD149
+D266   20 49 D1   LD266     JSR LD149						;MOVE UP ONE SCAN LINE
 D269   B1 F4      LD269     LDA ($F4),Y
 D26B   09 80                ORA #$80
 D26D   91 F4                STA ($F4),Y
